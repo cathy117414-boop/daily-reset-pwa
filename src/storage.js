@@ -1,0 +1,87 @@
+const STORAGE_KEY = "daily-reset-pwa:v1";
+
+export const DEFAULT_HABITS = [
+  { id: "wake", time: "07:30", module: "生活", name: "规律起床", note: "起床后先喝一杯水", active: true },
+  { id: "codex", time: "09:00", module: "成长", name: "Codex训练", note: "完成今天的练习", active: true },
+  { id: "fitness", time: "17:30", module: "健身", name: "健身或运动", note: "至少活动30分钟", active: true },
+  { id: "english", time: "20:00", module: "语言", name: "英语口语", note: "影子跟读20分钟", active: true },
+  { id: "french", time: "20:30", module: "语言", name: "法语", note: "学习或复习15分钟", active: true },
+  { id: "medicine", time: "21:30", module: "护理", name: "脚趾甲涂药", note: "洗澡后完成", active: true },
+  { id: "lotion", time: "21:35", module: "护理", name: "涂身体乳", note: "洗澡后全身护理", active: true },
+  { id: "sleep", time: "23:00", module: "睡眠", name: "按时睡觉", note: "放下手机，准备入睡", active: true },
+];
+
+const initialState = {
+  version: 1,
+  habits: DEFAULT_HABITS,
+  days: {},
+  workouts: [],
+};
+
+export function loadState() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (!parsed || parsed.version !== 1) return initialState;
+    return {
+      ...initialState,
+      ...parsed,
+      habits: Array.isArray(parsed.habits) ? parsed.habits : DEFAULT_HABITS,
+      days: parsed.days || {},
+      workouts: Array.isArray(parsed.workouts) ? parsed.workouts : [],
+    };
+  } catch {
+    return initialState;
+  }
+}
+
+export function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+export function getDateKey(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+export function addDays(date, amount) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + amount);
+  return next;
+}
+
+export function ensureDay(state, dateKey) {
+  if (state.days[dateKey]) return state;
+
+  const tasks = state.habits
+    .filter((habit) => habit.active)
+    .map((habit) => ({
+      id: `${dateKey}:${habit.id}`,
+      habitId: habit.id,
+      time: habit.time,
+      module: habit.module,
+      name: habit.name,
+      note: habit.note,
+      completed: false,
+      temporary: false,
+    }));
+
+  return {
+    ...state,
+    days: {
+      ...state.days,
+      [dateKey]: { tasks },
+    },
+  };
+}
+
+export function completionForDay(state, dateKey) {
+  const tasks = state.days[dateKey]?.tasks || [];
+  const completed = tasks.filter((task) => task.completed).length;
+  return {
+    total: tasks.length,
+    completed,
+    percent: tasks.length ? Math.round((completed / tasks.length) * 100) : 0,
+  };
+}
