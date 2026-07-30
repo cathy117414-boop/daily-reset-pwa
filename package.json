@@ -1,7 +1,7 @@
 {
   "name": "daily-reset-pwa",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "engines": {
     "node": ">=22.13.0"
@@ -10,7 +10,8 @@
     "dev": "vinext dev",
     "build": "vinext build",
     "build:pages": "node scripts/generate-icons.mjs && vite build --config vite.pages.config.js",
-    "start": "vinext start"
+    "start": "vinext start",
+    "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "next": "16.2.6",

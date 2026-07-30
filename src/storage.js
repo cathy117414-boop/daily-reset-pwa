@@ -1,4 +1,7 @@
-const STORAGE_KEY = "daily-reset-pwa:v1";
+import { DEFAULT_WATER_SETTINGS, normalizeWaterDay, normalizeWaterSettings } from "./water.js";
+
+const STORAGE_KEY = "daily-reset-pwa:v2";
+const LEGACY_STORAGE_KEY = "daily-reset-pwa:v1";
 
 export const DEFAULT_HABITS = [
   { id: "wake", time: "07:30", module: "生活", name: "规律起床", note: "起床后先喝一杯水", active: true },
@@ -11,31 +14,53 @@ export const DEFAULT_HABITS = [
   { id: "sleep", time: "23:00", module: "睡眠", name: "按时睡觉", note: "放下手机，准备入睡", active: true },
 ];
 
-const initialState = {
-  version: 1,
-  habits: DEFAULT_HABITS,
-  days: {},
-  workouts: [],
-};
+function createInitialState() {
+  return {
+    version: 2,
+    habits: DEFAULT_HABITS.map((habit) => ({ ...habit })),
+    days: {},
+    workouts: [],
+    waterSettings: { ...DEFAULT_WATER_SETTINGS },
+    waterDays: {},
+  };
+}
 
-export function loadState() {
+export function migrateState(parsed) {
+  const initialState = createInitialState();
+  if (!parsed || typeof parsed !== "object") return initialState;
+
+  const waterSettings = normalizeWaterSettings(parsed.waterSettings);
+  const waterDays = Object.fromEntries(
+    Object.entries(parsed.waterDays || {}).map(([date, record]) => [
+      date,
+      normalizeWaterDay(record, date, waterSettings),
+    ]),
+  );
+
+  return {
+    ...initialState,
+    ...parsed,
+    version: 2,
+    habits: Array.isArray(parsed.habits) ? parsed.habits : initialState.habits,
+    days: parsed.days && typeof parsed.days === "object" ? parsed.days : {},
+    workouts: Array.isArray(parsed.workouts) ? parsed.workouts : [],
+    waterSettings,
+    waterDays,
+  };
+}
+
+export function loadState(storage = localStorage) {
   try {
-    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (!parsed || parsed.version !== 1) return initialState;
-    return {
-      ...initialState,
-      ...parsed,
-      habits: Array.isArray(parsed.habits) ? parsed.habits : DEFAULT_HABITS,
-      days: parsed.days || {},
-      workouts: Array.isArray(parsed.workouts) ? parsed.workouts : [],
-    };
+    const current = storage.getItem(STORAGE_KEY);
+    const legacy = storage.getItem(LEGACY_STORAGE_KEY);
+    return migrateState(JSON.parse(current || legacy));
   } catch {
-    return initialState;
+    return createInitialState();
   }
 }
 
-export function saveState(state) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+export function saveState(state, storage = localStorage) {
+  storage.setItem(STORAGE_KEY, JSON.stringify({ ...state, version: 2 }));
 }
 
 export function getDateKey(date = new Date()) {

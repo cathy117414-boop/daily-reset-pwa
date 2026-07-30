@@ -1,4 +1,4 @@
-const CACHE_NAME = "daily-reset-v2";
+const CACHE_NAME = "daily-reset-v3";
 const SCOPE_URL = self.registration.scope;
 const scoped = (path = "") => new URL(path, SCOPE_URL).toString();
 const APP_SHELL = [

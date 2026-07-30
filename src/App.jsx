@@ -8,10 +8,12 @@ import {
   saveState,
 } from "./storage";
 import { AddButton, BottomNav, Field, Modal, ProgressPanel, TaskList } from "./components";
-import { CheckIcon, EditIcon, PlusIcon, TrashIcon } from "./icons";
+import { EditIcon, TrashIcon } from "./icons";
+import { WaterCard } from "./WaterCard";
+import { addWater, ensureWaterDay, getSevenDayWaterStats, undoLastWater, updateWaterSettings } from "./water";
 
 const WEEKDAYS = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-const MODULES = ["生活", "成长", "健身", "语言", "护理", "睡眠", "工作", "其他"];
+const MODULES = ["生活", "成长", "健身", "语言", "饮水", "护理", "睡眠", "工作", "其他"];
 
 function formatHeaderDate(date) {
   return `${date.getMonth() + 1}月${date.getDate()}日 ${WEEKDAYS[date.getDay()]}`;
@@ -51,6 +53,7 @@ function TaskForm({ initial = emptyTask, onSave, onClose }) {
 function DayPage({ title, date, state, setState, isToday }) {
   const dateKey = getDateKey(date);
   const tasks = state.days[dateKey]?.tasks || [];
+  const waterDay = state.waterDays?.[dateKey];
   const progress = completionForDay(state, dateKey);
   const [editing, setEditing] = useState(null);
 
@@ -81,6 +84,14 @@ function DayPage({ title, date, state, setState, isToday }) {
         {isToday ? <><h1>早上好，Cathy</h1><p>今天，温柔地重新开始。</p></> : <><h1>{title}</h1><p>提前想好一点，明天就从容一点。</p></>}
       </header>
       {isToday ? <ProgressPanel {...progress} /> : null}
+      {isToday && waterDay ? (
+        <WaterCard
+          day={waterDay}
+          onAdd={(amountMl) => setState((current) => addWater(current, dateKey, amountMl))}
+          onUndo={() => setState((current) => undoLastWater(current, dateKey))}
+          onSettings={(settings) => setState((current) => updateWaterSettings(current, dateKey, settings))}
+        />
+      ) : null}
       <section className="section-block">
         <div className="section-heading"><h2>{isToday ? "今日任务" : "明日安排"}</h2><AddButton onClick={() => setEditing({})} /></div>
         <TaskList tasks={tasks} onToggle={toggle} onEdit={setEditing} onDelete={remove} />
@@ -182,11 +193,17 @@ function WorkoutsPage({ state, setState }) {
 }
 
 function WeeklyPage({ state }) {
-  const days = useMemo(() => Array.from({ length: 7 }, (_, index) => {
-    const date = addDays(new Date(), index - 6);
-    const key = getDateKey(date);
-    return { date, key, ...completionForDay(state, key) };
-  }), [state]);
+  const { days, waterStats } = useMemo(() => {
+    const recentDays = Array.from({ length: 7 }, (_, index) => {
+      const date = addDays(new Date(), index - 6);
+      const key = getDateKey(date);
+      return { date, key, ...completionForDay(state, key) };
+    });
+    return {
+      days: recentDays,
+      waterStats: getSevenDayWaterStats(state, recentDays.map((day) => day.key)),
+    };
+  }, [state]);
   const average = days.length ? Math.round(days.reduce((sum, day) => sum + day.percent, 0) / days.length) : 0;
   const completed = days.reduce((sum, day) => sum + day.completed, 0);
 
@@ -215,6 +232,31 @@ function WeeklyPage({ state }) {
           ))}
         </div>
       </section>
+      <section className="section-block water-week-section">
+        <div className="section-heading"><h2>7天饮水回顾</h2></div>
+        <div className="water-week-summary">
+          <div><span>本周达标</span><strong>{waterStats.targetDays}<small> / 7天</small></strong></div>
+          <div><span>日均饮水</span><strong>{waterStats.averageMl}<small>ml</small></strong></div>
+          <div><span>连续达标</span><strong>{waterStats.streak}<small>天</small></strong></div>
+        </div>
+        <div className="water-week-list" aria-label="最近7天饮水完成情况">
+          {[...waterStats.days].reverse().map((day) => {
+            const date = new Date(`${day.date}T12:00:00`);
+            return (
+              <div className="water-day-row" key={day.date}>
+                <div>
+                  <strong>{date.getMonth() + 1}/{date.getDate()}</strong>
+                  <span>{day.totalMl} / {day.goalMl} ml</span>
+                </div>
+                <div className="water-day-progress" aria-hidden="true">
+                  <span style={{ width: `${day.visualPercent}%` }} />
+                </div>
+                <strong className={day.completed ? "met" : ""}>{day.percent}%</strong>
+              </div>
+            );
+          })}
+        </div>
+      </section>
     </>
   );
 }
@@ -225,14 +267,33 @@ function PageIntro({ title, text }) {
 
 export default function App() {
   const [active, setActive] = useState("today");
+  const [currentDateKey, setCurrentDateKey] = useState(() => getDateKey());
   const [state, setState] = useState(() => {
     let next = loadState();
-    next = ensureDay(next, getDateKey());
+    next = ensureDay(next, currentDateKey);
+    next = ensureWaterDay(next, currentDateKey);
     next = ensureDay(next, getDateKey(addDays(new Date(), 1)));
     return next;
   });
 
   useEffect(() => saveState(state), [state]);
+  useEffect(() => {
+    const syncDate = () => setCurrentDateKey(getDateKey());
+    const timer = window.setInterval(syncDate, 30_000);
+    document.addEventListener("visibilitychange", syncDate);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", syncDate);
+    };
+  }, []);
+  useEffect(() => {
+    setState((current) => {
+      let next = ensureDay(current, currentDateKey);
+      next = ensureWaterDay(next, currentDateKey);
+      next = ensureDay(next, getDateKey(addDays(new Date(), 1)));
+      return next;
+    });
+  }, [currentDateKey]);
 
   let page;
   if (active === "today") page = <DayPage title="今日" date={new Date()} state={state} setState={setState} isToday />;
