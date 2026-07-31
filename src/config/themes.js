@@ -1,0 +1,123 @@
+export const DEFAULT_THEME_ID = "bearisbug";
+
+export const THEMES = Object.freeze([
+  {
+    id: "pompompurin",
+    name: "黄色布丁狗和朋友",
+    primary: "#B87932",
+    primaryDark: "#74471F",
+    background: "#FFF7D8",
+    card: "#FFFCED",
+    text: "#4B3422",
+    mutedText: "#796859",
+    accent: "#F3D778",
+    border: "#E6CD91",
+    waterColor: "#DFB649",
+    onPrimary: "#FFFFFF",
+    darkBackground: "#2B2119",
+    darkCard: "#382B20",
+    darkText: "#FFF7E8",
+    darkMutedText: "#D1BFAE",
+    darkBorder: "#5D4937",
+    radius: 24,
+    shadow: "0 12px 30px rgba(116, 71, 31, .10)",
+    coverGradient: "linear-gradient(135deg, #FFF0AC, #F7D77C)",
+    coverImage: "themes/pompompurin/cover.webp",
+    mascotImage: "themes/pompompurin/mascot.webp",
+    completedImage: "themes/pompompurin/completed.webp",
+    thumbnailImage: "themes/pompompurin/thumbnail.webp",
+  },
+  {
+    id: "kitty",
+    name: "粉色 Kitty",
+    primary: "#D66D8C",
+    primaryDark: "#8C3D58",
+    background: "#FFF1F5",
+    card: "#FFFBFC",
+    text: "#4B3039",
+    mutedText: "#826C74",
+    accent: "#F4B6C8",
+    border: "#EBCAD4",
+    waterColor: "#E58DA9",
+    onPrimary: "#FFFFFF",
+    darkBackground: "#2A1D23",
+    darkCard: "#38262E",
+    darkText: "#FFF2F6",
+    darkMutedText: "#D5BAC3",
+    darkBorder: "#684553",
+    radius: 26,
+    shadow: "0 12px 30px rgba(140, 61, 88, .11)",
+    coverGradient: "linear-gradient(135deg, #FFE2EB, #F5B9CB)",
+    coverImage: "themes/kitty/cover.webp",
+    mascotImage: "themes/kitty/mascot.webp",
+    completedImage: "themes/kitty/completed.webp",
+    thumbnailImage: "themes/kitty/thumbnail.webp",
+  },
+  {
+    id: "miffy",
+    name: "Miffy",
+    primary: "#D7773F",
+    primaryDark: "#314A55",
+    background: "#F7F5EF",
+    card: "#FFFFFF",
+    text: "#292D2F",
+    mutedText: "#6E7475",
+    accent: "#EFC85F",
+    border: "#D9D7CF",
+    waterColor: "#72A8B8",
+    onPrimary: "#FFFFFF",
+    darkBackground: "#1E2528",
+    darkCard: "#293236",
+    darkText: "#F8F7F2",
+    darkMutedText: "#BAC1C2",
+    darkBorder: "#465459",
+    radius: 14,
+    shadow: "0 8px 20px rgba(41, 45, 47, .08)",
+    coverGradient: "linear-gradient(135deg, #FFFDF8, #F0E6C7)",
+    coverImage: "themes/miffy/cover.webp",
+    mascotImage: "themes/miffy/mascot.webp",
+    completedImage: "themes/miffy/completed.webp",
+    thumbnailImage: "themes/miffy/thumbnail.webp",
+  },
+  {
+    id: "bearisbug",
+    name: "小熊虫 bearisbug",
+    primary: "#5F7D65",
+    primaryDark: "#3F5945",
+    background: "#F8F6EF",
+    card: "#FFFDF8",
+    text: "#203C2A",
+    mutedText: "#737871",
+    accent: "#CDAA7C",
+    border: "#DDD8CC",
+    waterColor: "#78A988",
+    onPrimary: "#FFFFFF",
+    darkBackground: "#172019",
+    darkCard: "#222C24",
+    darkText: "#E8EFE8",
+    darkMutedText: "#AEB9B0",
+    darkBorder: "#3D4B40",
+    radius: 20,
+    shadow: "0 12px 30px rgba(63, 89, 69, .09)",
+    coverGradient: "linear-gradient(135deg, #E7E0CE, #C9D8C9)",
+    coverImage: "themes/bearisbug/cover.webp",
+    mascotImage: "themes/bearisbug/mascot.webp",
+    completedImage: "themes/bearisbug/completed.webp",
+    thumbnailImage: "themes/bearisbug/thumbnail.webp",
+  },
+]);
+
+export const THEME_BY_ID = new Map(THEMES.map((theme) => [theme.id, theme]));
+
+export function normalizeThemeId(themeId) {
+  return THEME_BY_ID.has(themeId) ? themeId : DEFAULT_THEME_ID;
+}
+
+export function getTheme(themeId) {
+  return THEME_BY_ID.get(normalizeThemeId(themeId));
+}
+
+export function themeAssetUrl(path) {
+  const baseUrl = import.meta.env?.BASE_URL || "/";
+  return `${baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`}${path}`;
+}

@@ -1,7 +1,8 @@
 import { DEFAULT_WATER_SETTINGS, normalizeWaterDay, normalizeWaterSettings } from "./water.js";
+import { DEFAULT_THEME_ID, normalizeThemeId } from "./config/themes.js";
 
-const STORAGE_KEY = "daily-reset-pwa:v2";
-const LEGACY_STORAGE_KEY = "daily-reset-pwa:v1";
+const STORAGE_KEY = "daily-reset-pwa:v3";
+const LEGACY_STORAGE_KEYS = ["daily-reset-pwa:v2", "daily-reset-pwa:v1"];
 
 export const DEFAULT_HABITS = [
   { id: "wake", time: "07:30", module: "生活", name: "规律起床", note: "起床后先喝一杯水", active: true },
@@ -16,7 +17,8 @@ export const DEFAULT_HABITS = [
 
 function createInitialState() {
   return {
-    version: 2,
+    version: 3,
+    themeId: DEFAULT_THEME_ID,
     habits: DEFAULT_HABITS.map((habit) => ({ ...habit })),
     days: {},
     workouts: [],
@@ -40,7 +42,8 @@ export function migrateState(parsed) {
   return {
     ...initialState,
     ...parsed,
-    version: 2,
+    version: 3,
+    themeId: normalizeThemeId(parsed.themeId),
     habits: Array.isArray(parsed.habits) ? parsed.habits : initialState.habits,
     days: parsed.days && typeof parsed.days === "object" ? parsed.days : {},
     workouts: Array.isArray(parsed.workouts) ? parsed.workouts : [],
@@ -52,7 +55,7 @@ export function migrateState(parsed) {
 export function loadState(storage = localStorage) {
   try {
     const current = storage.getItem(STORAGE_KEY);
-    const legacy = storage.getItem(LEGACY_STORAGE_KEY);
+    const legacy = LEGACY_STORAGE_KEYS.map((key) => storage.getItem(key)).find(Boolean);
     return migrateState(JSON.parse(current || legacy));
   } catch {
     return createInitialState();
@@ -60,7 +63,7 @@ export function loadState(storage = localStorage) {
 }
 
 export function saveState(state, storage = localStorage) {
-  storage.setItem(STORAGE_KEY, JSON.stringify({ ...state, version: 2 }));
+  storage.setItem(STORAGE_KEY, JSON.stringify({ ...state, version: 3, themeId: normalizeThemeId(state.themeId) }));
 }
 
 export function getDateKey(date = new Date()) {

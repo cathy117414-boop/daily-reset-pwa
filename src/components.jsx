@@ -8,6 +8,7 @@ import {
   EditIcon,
   HabitIcon,
   ListIcon,
+  PaletteIcon,
   PlusIcon,
   TrashIcon,
 } from "./icons";
@@ -18,6 +19,7 @@ export const NAV_ITEMS = [
   { id: "habits", label: "固定习惯", Icon: HabitIcon },
   { id: "workouts", label: "健身记录", Icon: DumbbellIcon },
   { id: "weekly", label: "每周回顾", Icon: ChartIcon },
+  { id: "themes", label: "主题", Icon: PaletteIcon },
 ];
 
 export function BottomNav({ active, onChange }) {
@@ -48,6 +50,12 @@ export function ProgressPanel({ completed, total, percent }) {
         <div className="linear-progress" aria-hidden="true"><span style={{ width: `${percent}%` }} /></div>
       </div>
       <div className="progress-ring" style={progressStyle}><span>{percent}<small>%</small></span></div>
+      {percent === 100 && total > 0 ? (
+        <div className="completion-banner">
+          <span className="theme-completed-art" role="img" aria-label="今日任务完成主题插画" />
+          <div><strong>今天的计划完成啦！</strong><span>做得很好，也记得给自己一点休息。</span></div>
+        </div>
+      ) : null}
     </section>
   );
 }

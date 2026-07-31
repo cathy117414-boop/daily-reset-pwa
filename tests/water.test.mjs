@@ -30,7 +30,7 @@ function memoryStorage(initial = {}) {
 
 test("migrates v1 data without changing tasks, habits, or workouts", () => {
   const migrated = baseState();
-  assert.equal(migrated.version, 2);
+  assert.equal(migrated.version, 3);
   assert.equal(migrated.waterSettings.goalMl, 2200);
   assert.equal(migrated.waterSettings.cupSizeMl, 600);
   assert.deepEqual(migrated.days["2026-07-30"].tasks, [{ id: "task-1", completed: true }]);
@@ -71,7 +71,7 @@ test("supports custom amounts, remaining goal, completion, and overflow", () => 
   assert.equal(progress.visualPercent, 100);
 });
 
-test("saves and reloads v2 water data", () => {
+test("saves and reloads v3 water data", () => {
   const storage = memoryStorage();
   let state = ensureWaterDay(baseState(), "2026-07-30");
   state = addWater(state, "2026-07-30", 600, { id: "persisted" });
@@ -82,12 +82,36 @@ test("saves and reloads v2 water data", () => {
   assert.equal(loaded.waterDays["2026-07-30"].entries[0].id, "persisted");
 });
 
-test("loads a legacy v1 key when v2 has not been created", () => {
+test("loads a legacy v1 key when newer storage has not been created", () => {
   const legacy = JSON.stringify({ version: 1, habits: [], days: {}, workouts: [] });
   const storage = memoryStorage({ "daily-reset-pwa:v1": legacy });
   const loaded = loadState(storage);
-  assert.equal(loaded.version, 2);
+  assert.equal(loaded.version, 3);
   assert.equal(loaded.waterSettings.goalMl, 2200);
+});
+
+test("loads a legacy v2 key and keeps water records", () => {
+  const legacy = JSON.stringify({
+    version: 2,
+    habits: [],
+    days: {},
+    workouts: [],
+    waterSettings: { goalMl: 2400, cupSizeMl: 500 },
+    waterDays: {
+      "2026-07-30": {
+        date: "2026-07-30",
+        goalMl: 2400,
+        cupSizeMl: 500,
+        totalMl: 500,
+        entries: [{ id: "legacy-water", amountMl: 500, createdAt: "2026-07-30T08:00:00.000Z" }],
+      },
+    },
+  });
+  const storage = memoryStorage({ "daily-reset-pwa:v2": legacy });
+  const loaded = loadState(storage);
+  assert.equal(loaded.version, 3);
+  assert.equal(loaded.waterSettings.cupSizeMl, 500);
+  assert.equal(loaded.waterDays["2026-07-30"].totalMl, 500);
 });
 
 test("creates an independent water record for a new date", () => {
