@@ -108,179 +108,222 @@ function DayPage({ title, date, state, setState, isToday }) {
           onSettings={(settings) => setState((current) => updateWaterSettings(current, dateKey, settings))}
         />
       ) : null}
-      <section classNamu������k�w��J  --color-primary-dark: #3F5945;
-  --color-background: #F8F6EF;
-  --color-card: #FFFDF8;
-  --color-text: #203C2A;
-  --color-muted-text: #737871;
-  --color-accent: #CDAA7C;
-  --color-border: #DDD8CC;
-  --color-water: #78A988;
-  --color-on-primary: #FFFFFF;
-  --color-background-dark: #172019;
-  --color-card-dark: #222C24;
-  --color-text-dark: #E8EFE8;
-  --color-muted-text-dark: #AEB9B0;
-  --color-border-dark: #3D4B40;
-  --theme-radius: 20px;
-  --theme-shadow: 0 12px 30px rgba(63, 89, 69, .09);
-  --theme-cover-gradient: linear-gradient(135deg, #E7E0CE, #C9D8C9);
-  --theme-cover-image: none;
-  --theme-mascot-image: none;
-  --theme-completed-image: none;
-  --theme-thumbnail-image: none;
+      <section className="section-block">
+        <div className="section-heading"><h2>{isToday ? "今日任务" : "明日安排"}</h2><AddButton onClick={() => setEditing({})} /></div>
+        <TaskList tasks={tasks} onToggle={toggle} onEdit={setEditing} onDelete={remove} />
+      </section>
+      {editing !== null ? <Modal title={editing.id ? "修改安排" : "添加临时安排"} onClose={() => setEditing(null)}><TaskForm initial={editing.id ? editing : emptyTask} onSave={save} onClose={() => setEditing(null)} /></Modal> : null}
+    </>
+  );
 }
 
-.home-cover {
-  min-height: 230px;
-  padding: 22px;
-  border: 1px solid var(--color-border);
-  border-radius: calc(var(--theme-radius) + 6px);
-  background-color: var(--color-card);
-  background-image: var(--theme-cover-image), var(--theme-cover-gradient);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  box-shadow: var(--theme-shadow);
-  overflow: hidden;
-  isolation: isolate;
-  position: relative;
-}
-.home-cover::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--color-card) 94%, transparent) 0 48%, transparent 78%);
-}
-.home-cover-content { display: grid; grid-template-columns: minmax(0, 1fr) 104px; align-items: end; min-height: 184px; gap: 12px; }
-.home-cover .date-line { margin-bottom: 21px; }
-.theme-mascot {
-  width: 104px;
-  height: 130px;
-  align-self: end;
-  border-radius: 52px 52px 35px 35px;
-  background-color: color-mix(in srgb, var(--color-accent) 56%, var(--color-card));
-  background-image: var(--theme-mascot-image);
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  background-size: contain;
-  border: 2px solid color-mix(in srgb, var(--color-primary) 36%, transparent);
-  box-shadow: inset 0 8px 18px color-mix(in srgb, var(--color-card) 60%, transparent);
-  position: relative;
-}
-.theme-mascot::before, .theme-mascot::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: -8px;
-  width: 34px;
-  height: 38px;
-  border-radius: 50%;
-  background: inherit;
-}
-.theme-mascot::before { left: 5px; transform: rotate(-22deg); }
-.theme-mascot::after { right: 5px; transform: rotate(22deg); }
+function HabitsPage({ state, setState }) {
+  const [editing, setEditing] = useState(null);
+  const save = (form) => {
+    setState((current) => ({
+      ...current,
+      habits: editing?.id
+        ? current.habits.map((habit) => habit.id === editing.id ? { ...habit, ...form } : habit)
+        : [...current.habits, { ...form, id: makeId("habit"), active: true }],
+    }));
+    setEditing(null);
+  };
+  const toggle = (id) => setState((current) => ({ ...current, habits: current.habits.map((habit) => habit.id === id ? { ...habit, active: !habit.active } : habit) }));
+  const remove = (id) => setState((current) => ({ ...current, habits: current.habits.filter((habit) => habit.id !== id) }));
 
-.completion-banner {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 58px 1fr;
-  align-items: center;
-  gap: 12px;
-  margin-top: 4px;
-  padding: 10px 12px;
-  border-radius: calc(var(--theme-radius) - 5px);
-  background: color-mix(in srgb, var(--color-accent) 24%, var(--color-card));
-  color: var(--color-primary-dark);
-}
-.theme-completed-art {
-  width: 58px;
-  height: 48px;
-  border-radius: 18px;
-  background-color: color-mix(in srgb, var(--color-accent) 54%, var(--color-card));
-  background-image: var(--theme-completed-image);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.completion-banner strong { display: block; font-size: 14px; }
-.completion-banner span { display: block; margin-top: 3px; color: var(--color-muted-text); font-size: 12px; }
-
-.theme-center-intro { padding-bottom: 20px; }
-.theme-center-kicker { color: var(--color-primary); font-size: 13px; font-weight: 760; letter-spacing: .1em; }
-.theme-center-panel { padding-bottom: 12px; }
-.theme-preview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.theme-preview-card {
-  min-width: 0;
-  padding: 0;
-  overflow: hidden;
-  border: 2px solid var(--preview-border);
-  border-radius: calc(var(--theme-radius) + 2px);
-  background: var(--preview-card);
-  color: var(--preview-text);
-  text-align: left;
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--preview-primary) 10%, transparent);
-  cursor: pointer;
-  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
-}
-.theme-preview-card.active {
-  border-color: var(--preview-primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--preview-primary) 18%, transparent), 0 10px 24px color-mix(in srgb, var(--preview-primary) 13%, transparent);
-  transform: translateY(-2px);
-}
-.theme-thumbnail {
-  height: 112px;
-  display: grid;
-  place-items: center;
-  position: relative;
-  overflow: hidden;
-  background-color: var(--preview-background);
-  background-image: var(--preview-thumbnail), linear-gradient(145deg, var(--preview-background), var(--preview-accent));
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.placeholder-ears {
-  width: 62px;
-  height: 64px;
-  border-radius: 31px 31px 22px 22px;
-  background: var(--preview-card);
-  border: 2px solid color-mix(in srgb, var(--preview-primary) 42%, transparent);
-  box-shadow: -18px -23px 0 -9px var(--preview-card), 18px -23px 0 -9px var(--preview-card);
-}
-.placeholder-face { position: absolute; color: var(--preview-primary); font-weight: 760; font-size: 13px; }
-.theme-card-body { display: grid; gap: 11px; padding: 13px; }
-.theme-card-title { display: grid; gap: 7px; }
-.theme-card-title > strong { min-height: 42px; font-size: 15px; line-height: 1.4; }
-.theme-current { width: fit-content; display: inline-flex; align-items: center; gap: 4px; color: var(--preview-primary); font-size: 11px; font-weight: 720; }
-.theme-swatches { display: flex; align-items: center; gap: 5px; }
-.theme-swatches i { width: 18px; height: 18px; border: 1px solid color-mix(in srgb, var(--preview-text) 18%, transparent); border-radius: 50%; }
-.theme-center-actions {
-  position: sticky;
-  bottom: calc(80px + env(safe-area-inset-bottom));
-  z-index: 4;
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 22px;
-  padding: 12px;
-  border: 1px solid var(--color-border);
-  border-radius: calc(var(--theme-radius) - 2px);
-  background: color-mix(in srgb, var(--color-card) 94%, transparent);
-  box-shadow: var(--theme-shadow);
-  backdrop-filter: blur(16px);
-}
-.theme-reset-button { border: 1px solid var(--color-border); }
-.theme-image-note { margin: 13px 4px 0; color: var(--color-muted-text); font-size: 12px; line-height: 1.55; }
-
-@media (max-width: 370px) {
-  .theme-preview-grid { grid-template-columns: 1fr; }
-  .home-cover-content { grid-template-columns: minmax(0, 1fr) 82px; }
-  .theme-mascot { width: 82px; height: 108px; }
+  return (
+    <>
+      <PageIntro title="固定习惯" text="开启的习惯会自动加入尚未生成的每日计划。" />
+      <section className="section-block">
+        <div className="section-heading"><h2>{state.habits.filter((item) => item.active).length} 项已开启</h2><AddButton onClick={() => setEditing({})}>添加习惯</AddButton></div>
+        <div className="habit-list">
+          {state.habits.map((habit) => (
+            <article className={`habit-row ${habit.active ? "" : "inactive"}`} key={habit.id}>
+              <button className={`habit-toggle ${habit.active ? "on" : ""}`} onClick={() => toggle(habit.id)} aria-label={`${habit.active ? "关闭" : "开启"} ${habit.name}`}><span /></button>
+              <div><div className="habit-title"><time>{habit.time}</time><strong>{habit.name}</strong></div><p>{habit.module} · {habit.note}</p></div>
+              <div className="row-actions"><button onClick={() => setEditing(habit)} aria-label={`编辑 ${habit.name}`}><EditIcon size={19} /></button><button onClick={() => remove(habit.id)} aria-label={`删除 ${habit.name}`}><TrashIcon size={18} /></button></div>
+            </article>
+          ))}
+        </div>
+      </section>
+      {editing !== null ? <Modal title={editing.id ? "修改固定习惯" : "添加固定习惯"} onClose={() => setEditing(null)}><TaskForm initial={editing.id ? editing : emptyTask} onSave={save} onClose={() => setEditing(null)} /></Modal> : null}
+    </>
+  );
 }
 
-@media (prefers-color-scheme: dark) {
-  .home-cover::after { background: linear-gradient(90deg, color-mix(in srgb, var(--color-card-dark) 94%, transparent) 0 52%, transparent 82%); }
-  .completion-banner { color: var(--color-text-dark); }
+function WorkoutForm({ initial = emptyWorkout, onSave, onClose }) {
+  const [form, setForm] = useState(() => ({ ...initial }));
+  const update = (field) => (event) => setForm((current) => ({ ...current, [field]: event.target.value }));
+  const submit = (event) => {
+    event.preventDefault();
+    onSave({ ...form, exercises: form.exercises.trim() });
+  };
+  return (
+    <form className="form-stack" onSubmit={submit}>
+      <div className="form-grid">
+        <Field label="日期"><input type="date" value={form.date} onChange={update("date")} required /></Field>
+        <Field label="训练类型"><input value={form.type} onChange={update("type")} placeholder="力量训练" required /></Field>
+      </div>
+      <Field label="动作"><textarea value={form.exercises} onChange={update("exercises")} placeholder="深蹲、硬拉、臀桥…" rows="3" required /></Field>
+      <div className="form-grid">
+        <Field label="组数"><input value={form.sets} onChange={update("sets")} inputMode="numeric" placeholder="4 × 12" /></Field>
+        <Field label="重量"><input value={form.weight} onChange={update("weight")} placeholder="20 kg" /></Field>
+      </div>
+      <Field label="有氧时间（分钟）"><input type="number" min="0" value={form.cardioMinutes} onChange={update("cardioMinutes")} placeholder="30" /></Field>
+      <div className="form-actions"><button type="button" className="text-button" onClick={onClose}>取消</button><button className="primary-button">保存记录</button></div>
+    </form>
+  );
+}
+
+function WorkoutsPage({ state, setState }) {
+  const [editing, setEditing] = useState(null);
+  const save = (form) => {
+    setState((current) => ({
+      ...current,
+      workouts: editing?.id
+        ? current.workouts.map((item) => item.id === editing.id ? { ...item, ...form } : item)
+        : [{ ...form, id: makeId("workout") }, ...current.workouts],
+    }));
+    setEditing(null);
+  };
+  const remove = (id) => setState((current) => ({ ...current, workouts: current.workouts.filter((item) => item.id !== id) }));
+
+  return (
+    <>
+      <PageIntro title="健身记录" text="把今天做到的写下来，不追求完美，只记录进步。" />
+      <section className="section-block">
+        <div className="section-heading"><h2>训练日志</h2><AddButton onClick={() => setEditing({})}>记录训练</AddButton></div>
+        <div className="workout-list">
+          {state.workouts.length ? state.workouts.map((item) => (
+            <article className="workout-card" key={item.id}>
+              <div className="workout-top"><div><time>{item.date}</time><h3>{item.type}</h3></div><div className="row-actions"><button onClick={() => setEditing(item)} aria-label="编辑健身记录"><EditIcon size={19} /></button><button onClick={() => remove(item.id)} aria-label="删除健身记录"><TrashIcon size={18} /></button></div></div>
+              <p className="exercise-list">{item.exercises}</p>
+              <dl><div><dt>组数</dt><dd>{item.sets || "—"}</dd></div><div><dt>重量</dt><dd>{item.weight || "—"}</dd></div><div><dt>有氧</dt><dd>{item.cardioMinutes ? `${item.cardioMinutes} 分钟` : "—"}</dd></div></dl>
+            </article>
+          )) : <div className="empty-state">还没有训练记录。完成一次运动后，就从这里开始。</div>}
+        </div>
+      </section>
+      {editing !== null ? <Modal title={editing.id ? "修改训练记录" : "记录今天的训练"} onClose={() => setEditing(null)}><WorkoutForm initial={editing.id ? editing : emptyWorkout} onSave={save} onClose={() => setEditing(null)} /></Modal> : null}
+    </>
+  );
+}
+
+function WeeklyPage({ state }) {
+  const { days, waterStats } = useMemo(() => {
+    const recentDays = Array.from({ length: 7 }, (_, index) => {
+      const date = addDays(new Date(), index - 6);
+      const key = getDateKey(date);
+      return { date, key, ...completionForDay(state, key) };
+    });
+    return {
+      days: recentDays,
+      waterStats: getSevenDayWaterStats(state, recentDays.map((day) => day.key)),
+    };
+  }, [state]);
+  const average = days.length ? Math.round(days.reduce((sum, day) => sum + day.percent, 0) / days.length) : 0;
+  const completed = days.reduce((sum, day) => sum + day.completed, 0);
+
+  return (
+    <>
+      <PageIntro title="每周回顾" text="看见已经做到的，也给没有完成的留一点余地。" />
+      <section className="weekly-summary">
+        <div><span>最近7天平均完成率</span><strong>{average}<small>%</small></strong></div>
+        <p>一共完成了 {completed} 项任务</p>
+      </section>
+      <section className="section-block">
+        <div className="section-heading"><h2>7天完成情况</h2></div>
+        <div className="week-chart" aria-label="最近7天完成率柱状图">
+          {days.map((day) => (
+            <div className="bar-column" key={day.key}>
+              <span className="bar-value">{day.percent}%</span>
+              <div className="bar-track"><div className="bar-fill" style={{ height: `${Math.max(day.percent, 3)}%` }} /></div>
+              <span>{["日", "一", "二", "三", "四", "五", "六"][day.date.getDay()]}</span>
+              <small>{day.date.getMonth() + 1}/{day.date.getDate()}</small>
+            </div>
+          ))}
+        </div>
+        <div className="week-list">
+          {days.slice().reverse().map((day) => (
+            <div key={day.key}><span>{formatHeaderDate(day.date)}</span><span>{day.completed} / {day.total}</span><strong>{day.percent}%</strong></div>
+          ))}
+        </div>
+      </section>
+      <section className="section-block water-week-section">
+        <div className="section-heading"><h2>7天饮水回顾</h2></div>
+        <div className="water-week-summary">
+          <div><span>本周达标</span><strong>{waterStats.targetDays}<small> / 7天</small></strong></div>
+          <div><span>日均饮水</span><strong>{waterStats.averageMl}<small>ml</small></strong></div>
+          <div><span>连续达标</span><strong>{waterStats.streak}<small>天</small></strong></div>
+        </div>
+        <div className="water-week-list" aria-label="最近7天饮水完成情况">
+          {[...waterStats.days].reverse().map((day) => {
+            const date = new Date(`${day.date}T12:00:00`);
+            return (
+              <div className="water-day-row" key={day.date}>
+                <div>
+                  <strong>{date.getMonth() + 1}/{date.getDate()}</strong>
+                  <span>{day.totalMl} / {day.goalMl} ml</span>
+                </div>
+                <div className="water-day-progress" aria-hidden="true">
+                  <span style={{ width: `${day.visualPercent}%` }} />
+                </div>
+                <strong className={day.completed ? "met" : ""}>{day.percent}%</strong>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    </>
+  );
+}
+
+function PageIntro({ title, text }) {
+  return <header className="page-header secondary"><h1>{title}</h1><p>{text}</p></header>;
+}
+
+export default function App() {
+  const [active, setActive] = useState("today");
+  const [currentDateKey, setCurrentDateKey] = useState(() => getDateKey());
+  const [state, setState] = useState(() => {
+    let next = loadState();
+    next = ensureDay(next, currentDateKey);
+    next = ensureWaterDay(next, currentDateKey);
+    next = ensureDay(next, getDateKey(addDays(new Date(), 1)));
+    return next;
+  });
+  const theme = useTheme(state.themeId, (themeId) => setState((current) => ({ ...current, themeId })));
+
+  useEffect(() => saveState(state), [state]);
+  useEffect(() => {
+    const syncDate = () => setCurrentDateKey(getDateKey());
+    const timer = window.setInterval(syncDate, 30_000);
+    document.addEventListener("visibilitychange", syncDate);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", syncDate);
+    };
+  }, []);
+  useEffect(() => {
+    setState((current) => {
+      let next = ensureDay(current, currentDateKey);
+      next = ensureWaterDay(next, currentDateKey);
+      next = ensureDay(next, getDateKey(addDays(new Date(), 1)));
+      return next;
+    });
+  }, [currentDateKey]);
+
+  let page;
+  if (active === "today") page = <DayPage title="今日" date={new Date()} state={state} setState={setState} isToday />;
+  if (active === "tomorrow") page = <DayPage title="明日计划" date={addDays(new Date(), 1)} state={state} setState={setState} />;
+  if (active === "habits") page = <HabitsPage state={state} setState={setState} />;
+  if (active === "workouts") page = <WorkoutsPage state={state} setState={setState} />;
+  if (active === "weekly") page = <WeeklyPage state={state} />;
+  if (active === "themes") page = <ThemeCenter theme={theme} />;
+
+  return (
+    <div className="app-shell">
+      <main>{page}</main>
+      <BottomNav active={active} onChange={setActive} />
+    </div>
+  );
 }
