@@ -1,4 +1,4 @@
-const CACHE_NAME = "daily-reset-v4";
+const CACHE_NAME = "daily-reset-v5";
 const SCOPE_URL = self.registration.scope;
 const scoped = (path = "") => new URL(path, SCOPE_URL).toString();
 const APP_SHELL = [
@@ -8,7 +8,7 @@ const APP_SHELL = [
   scoped("app-icon-192.png"),
   scoped("app-icon-512.png"),
 ];
-const THEME_ASSETS = ["pompompurin", "kitty", "miffy", "bearisbug"].flatMap((theme) =>
+const THEME_ASSETS = ["cream-puppy", "pink-kitten", "minimal-rabbit", "bear-bug"].flatMap((theme) =>
   ["cover.webp", "mascot.webp", "completed.webp", "thumbnail.webp"].map((file) =>
     scoped(`themes/${theme}/${file}`),
   ),

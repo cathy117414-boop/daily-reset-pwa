@@ -61,7 +61,12 @@ export function ProgressPanel({ completed, total, percent }) {
 }
 
 export function TaskList({ tasks, onToggle, onEdit, onDelete, emptyText = "这一天还没有安排" }) {
-  if (!tasks.length) return <div className="empty-state">{emptyText}</div>;
+  if (!tasks.length) return (
+    <div className="empty-state">
+      <span className="empty-mascot" role="img" aria-label="当前主题角色插画" />
+      <span>{emptyText}</span>
+    </div>
+  );
 
   return (
     <div className="timeline">

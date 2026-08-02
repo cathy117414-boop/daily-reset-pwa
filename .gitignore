@@ -4,3 +4,4 @@ pages-dist/
 .next/
 .wrangler/
 *.log
+theme-source-backup/

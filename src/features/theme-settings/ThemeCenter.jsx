@@ -21,10 +21,7 @@ function ThemePreviewCard({ theme, activeThemeId, savedThemeId, onPreview }) {
       onClick={() => onPreview(theme.id)}
       aria-pressed={isActive}
     >
-      <span className="theme-thumbnail" role="img" aria-label={`${theme.name}主题预览`}>
-        <span className="placeholder-ears" />
-        <span className="placeholder-face">• ᴗ •</span>
-      </span>
+      <span className="theme-thumbnail" role="img" aria-label={`${theme.name}主题预览`} />
       <span className="theme-card-body">
         <span className="theme-card-title">
           <strong>{theme.name}</strong>
@@ -66,7 +63,7 @@ export function ThemeCenter({ theme }) {
             {theme.isPreviewing ? "保存主题" : "主题已保存"}
           </button>
         </div>
-        <p className="theme-image-note">角色图片未提供时会显示安全的配色占位，不影响主题使用。</p>
+        <p className="theme-image-note">主题图片会保持完整比例显示；素材不可用时自动回退为安全配色。</p>
       </section>
     </>
   );

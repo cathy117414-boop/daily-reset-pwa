@@ -1,5 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { DEFAULT_THEME_ID, THEMES, getTheme, normalizeThemeId } from "../src/config/themes.js";
 import { loadState, migrateState, saveState } from "../src/storage.js";
 
@@ -17,10 +19,18 @@ test("defines four complete centralized themes", () => {
     "mutedText", "accent", "border", "waterColor", "coverImage", "mascotImage",
     "completedImage", "thumbnailImage",
   ];
+  const assetDirectories = ["cream-puppy", "pink-kitten", "minimal-rabbit", "bear-bug"];
   assert.deepEqual(THEMES.map((theme) => theme.id), ["pompompurin", "kitty", "miffy", "bearisbug"]);
-  for (const theme of THEMES) {
+  for (const [index, theme] of THEMES.entries()) {
     for (const field of required) assert.ok(theme[field], `${theme.id}.${field} is required`);
-    assert.match(theme.coverImage, new RegExp(`^themes/${theme.id}/`));
+    for (const field of ["coverImage", "mascotImage", "completedImage", "thumbnailImage"]) {
+      assert.match(theme[field], new RegExp(`^themes/${assetDirectories[index]}/[^/]+\\.webp$`));
+      const assetPath = resolve("public", theme[field]);
+      assert.equal(existsSync(assetPath), true, `${assetPath} should exist`);
+      const header = readFileSync(assetPath).subarray(0, 12);
+      assert.equal(header.toString("ascii", 0, 4), "RIFF");
+      assert.equal(header.toString("ascii", 8, 12), "WEBP");
+    }
   }
 });
 

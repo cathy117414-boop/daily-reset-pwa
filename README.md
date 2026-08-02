@@ -65,13 +65,13 @@ pnpm run build
 
 ```text
 public/themes/
-├── pompompurin/
-├── kitty/
-├── miffy/
-└── bearisbug/
+├── cream-puppy/
+├── pink-kitten/
+├── minimal-rabbit/
+└── bear-bug/
 ```
 
-每个目录可包含 `cover.webp`、`mascot.webp`、`completed.webp` 和 `thumbnail.webp`。图片缺失时，应用会自动显示安全的 CSS 配色占位，不会出现损坏图片图标，也不影响离线使用。默认主题为“小熊虫 bearisbug”。
+每个目录包含 `cover.webp`、`mascot.webp`、`completed.webp` 和 `thumbnail.webp`。首页使用封面图，主题中心使用缩略图，100% 完成提示使用完成插画，空状态使用角色图。所有图片按完整比例显示，不裁掉主体；图片不可用时会自动显示安全的 CSS 配色占位，不会出现损坏图片图标。Service Worker 会预缓存这 16 张图片，确保首次在线加载后可离线显示。默认主题为“小熊虫 bearisbug”。
 
 ## 添加到手机主屏幕
 
