@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { CheckIcon } from "../../icons";
 import { THEMES, themeAssetUrl } from "../../config/themes.js";
 
 function ThemePreviewCard({ theme, activeThemeId, savedThemeId, onPreview }) {
   const isActive = activeThemeId === theme.id;
   const isSaved = savedThemeId === theme.id;
+  const [imageFailed, setImageFailed] = useState(false);
   const style = {
     "--preview-primary": theme.primary,
     "--preview-accent": theme.accent,
@@ -11,21 +13,26 @@ function ThemePreviewCard({ theme, activeThemeId, savedThemeId, onPreview }) {
     "--preview-card": theme.card,
     "--preview-text": theme.text,
     "--preview-border": theme.border,
-    "--preview-thumbnail": `url("${themeAssetUrl(theme.thumbnailImage)}")`,
   };
 
   return (
     <button
-      className={`theme-preview-card ${isActive ? "active" : ""}`}
+      className={`theme-preview-card theme-preview-card--${theme.id} ${isActive ? "active" : ""}`}
       style={style}
       onClick={() => onPreview(theme.id)}
       aria-pressed={isActive}
     >
-      <span className="theme-thumbnail" role="img" aria-label={`${theme.name}主题预览`} />
+      <span className="theme-thumbnail">
+        {imageFailed ? <span className="theme-thumbnail-fallback" role="img" aria-label={`${theme.name}主题预览`} /> : (
+          <img src={themeAssetUrl(theme.thumbnailImage)} alt={`${theme.name}主题预览`} decoding="async" onError={() => setImageFailed(true)} />
+        )}
+      </span>
       <span className="theme-card-body">
         <span className="theme-card-title">
           <strong>{theme.name}</strong>
-          {isActive ? <span className="theme-current"><CheckIcon size={15} />{isSaved ? "使用中" : "预览中"}</span> : null}
+          <span className={`theme-current ${isActive ? "" : "theme-current--empty"}`} aria-hidden={!isActive}>
+            <CheckIcon size={15} />{isSaved ? "使用中" : "预览中"}
+          </span>
         </span>
         <span className="theme-swatches" aria-label="主题主要配色">
           {[theme.primary, theme.accent, theme.background, theme.waterColor].map((color) => (
@@ -63,7 +70,7 @@ export function ThemeCenter({ theme }) {
             {theme.isPreviewing ? "保存主题" : "主题已保存"}
           </button>
         </div>
-        <p className="theme-image-note">主题图片会保持完整比例显示；素材不可用时自动回退为安全配色。</p>
+        <p className="theme-image-note">主题预览统一比例展示；素材不可用时自动回退为安全配色。</p>
       </section>
     </>
   );
