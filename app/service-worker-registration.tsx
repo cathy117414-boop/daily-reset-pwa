@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { registerPwaUpdates } from '../src/registerServiceWorker';
 
 export default function ServiceWorkerRegistration() {
   useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js");
-    }
+    if (process.env.NODE_ENV === 'production') return registerPwaUpdates('/');
   }, []);
 
   return null;

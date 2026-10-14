@@ -41,6 +41,15 @@ pnpm run dev
 
 ## 生产构建
 
+### PWA 更新与离线
+
+- 请使用 `pnpm run build:pages`（GitHub Pages）或 `pnpm run build`（Sites），构建末尾自动生成带内容哈希的 `sw.js` 和离线资源清单。不要仅运行原始 `vite build` / `vinext build` 后直接发布，也不要把 `public/sw.js` 源模板单独上传。
+- 每次实际资源或 Service Worker 内容改变，缓存版本自动改变；无需手改 `CACHE_NAME`。新版本资源全部安装成功后才 `skipWaiting()`，激活时删除本应用旧缓存并 `clients.claim()`，不清除 localStorage 或其他应用缓存。
+- 首页 HTML 与 manifest 联网优先、请求绕过 HTTP 缓存；断网或超时后回退到已保存版本。带哈希的 JS/CSS 缓存优先；未缓存的资源不会错误回退为 HTML。
+- 启动、回到前台、网络恢复及前台每 60 秒检查 Service Worker 更新，使用 `updateViaCache: 'none'`。切换到新 worker 后自动刷新一次；正在输入或打开编辑弹窗时延迟到操作结束，避免打断编辑。
+- `public/_headers` 给支持该文件的托管设置更新头；GitHub Pages 不支持自定义 `_headers`，仍可能返回 `max-age=600`。应用通过 `cache: 'no-store'` / `cache: 'reload'` 与显式更新检查处理此限制，不承诺 CDN 尚未完成发布时立即取得新文件。
+- 从旧版首次迁移：联网打开一次，等待新 worker 安装，再重新打开或刷新页面。以后版本自动更新。无需删除主屏幕图标、卸载或清除网站数据；清除数据会丢失本地计划和收藏。
+
 ```bash
 pnpm run build
 pnpm run start

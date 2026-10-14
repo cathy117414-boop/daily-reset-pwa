@@ -2,12 +2,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./styles.css";
+import { registerPwaUpdates } from './registerServiceWorker';
 
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`);
-  });
-}
+if (import.meta.env.PROD) registerPwaUpdates(import.meta.env.BASE_URL);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
