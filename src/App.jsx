@@ -13,6 +13,8 @@ import { WaterCard } from "./WaterCard";
 import { addWater, ensureWaterDay, getSevenDayWaterStats, undoLastWater, updateWaterSettings } from "./water";
 import { ThemeCenter } from "./features/theme-settings/ThemeCenter";
 import { useTheme } from "./hooks/useTheme";
+import { DailyLiteraryLine, LuminaLibrary } from "./features/literary/DailyLiteraryLine";
+import { toggleLiteraryFavorite } from "./literary.ts";
 
 const WEEKDAYS = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 const MODULES = ["生活", "成长", "健身", "语言", "饮水", "护理", "睡眠", "工作", "其他"];
@@ -52,7 +54,7 @@ function TaskForm({ initial = emptyTask, onSave, onClose }) {
   );
 }
 
-function DayPage({ title, date, state, setState, isToday }) {
+function DayPage({ title, date, state, setState, isToday, onLibrary, onFavorite }) {
   const dateKey = getDateKey(date);
   const tasks = state.days[dateKey]?.tasks || [];
   const waterDay = state.waterDays?.[dateKey];
@@ -82,15 +84,10 @@ function DayPage({ title, date, state, setState, isToday }) {
   return (
     <>
       {isToday ? (
-        <header className="page-header home-cover">
-          <div className="home-cover-content">
-            <div>
-              <div className="date-line">{formatHeaderDate(date)}</div>
-              <h1>早上好，Cathy</h1>
-              <p>今天，温柔地重新开始。</p>
-            </div>
-            <span className="theme-mascot" aria-hidden="true" />
-          </div>
+        <header className="lumina-header">
+          <div className="date-line">{formatHeaderDate(date)}</div>
+          <h1 className="lumina-brand" lang="en">Lumina</h1>
+          <DailyLiteraryLine dateKey={dateKey} favorites={state.literaryFavorites} onToggle={onFavorite} onLibrary={onLibrary} />
         </header>
       ) : (
         <header className="page-header">
@@ -292,6 +289,7 @@ export default function App() {
     return next;
   });
   const theme = useTheme(state.themeId, (themeId) => setState((current) => ({ ...current, themeId })));
+  const favorite = (id) => setState(current => ({ ...current, literaryFavorites: toggleLiteraryFavorite(current.literaryFavorites, id) }));
 
   useEffect(() => saveState(state), [state]);
   useEffect(() => {
@@ -313,12 +311,13 @@ export default function App() {
   }, [currentDateKey]);
 
   let page;
-  if (active === "today") page = <DayPage title="今日" date={new Date()} state={state} setState={setState} isToday />;
+  if (active === "today") page = <DayPage title="今日" date={new Date(`${currentDateKey}T12:00:00`)} state={state} setState={setState} isToday onLibrary={() => setActive('library')} onFavorite={favorite} />;
   if (active === "tomorrow") page = <DayPage title="明日计划" date={addDays(new Date(), 1)} state={state} setState={setState} />;
   if (active === "habits") page = <HabitsPage state={state} setState={setState} />;
   if (active === "workouts") page = <WorkoutsPage state={state} setState={setState} />;
   if (active === "weekly") page = <WeeklyPage state={state} />;
   if (active === "themes") page = <ThemeCenter theme={theme} />;
+  if (active === "library") page = <LuminaLibrary favorites={state.literaryFavorites} onToggle={favorite} onBack={() => setActive('today')} />;
 
   return (
     <div className="app-shell">

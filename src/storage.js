@@ -1,5 +1,6 @@
 import { DEFAULT_WATER_SETTINGS, normalizeWaterDay, normalizeWaterSettings } from "./water.js";
 import { DEFAULT_THEME_ID, normalizeThemeId } from "./config/themes.js";
+import { normalizeLiteraryFavorites } from "./literary.ts";
 
 const STORAGE_KEY = "daily-reset-pwa:v3";
 const LEGACY_STORAGE_KEYS = ["daily-reset-pwa:v2", "daily-reset-pwa:v1"];
@@ -19,6 +20,7 @@ function createInitialState() {
   return {
     version: 3,
     themeId: DEFAULT_THEME_ID,
+    literaryFavorites: [],
     habits: DEFAULT_HABITS.map((habit) => ({ ...habit })),
     days: {},
     workouts: [],
@@ -44,6 +46,7 @@ export function migrateState(parsed) {
     ...parsed,
     version: 3,
     themeId: normalizeThemeId(parsed.themeId),
+    literaryFavorites: normalizeLiteraryFavorites(parsed.literaryFavorites),
     habits: Array.isArray(parsed.habits) ? parsed.habits : initialState.habits,
     days: parsed.days && typeof parsed.days === "object" ? parsed.days : {},
     workouts: Array.isArray(parsed.workouts) ? parsed.workouts : [],

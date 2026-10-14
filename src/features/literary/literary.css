@@ -1,0 +1,27 @@
+.lumina-header { padding: 0 0 20px; }
+.lumina-brand { font-family: Georgia, 'Times New Roman', serif; font-weight: 500; letter-spacing: .02em; font-size: 38px; margin: 0; }
+.lumina-header .date-line { color: var(--muted); font-size: 12px; margin: 0 0 14px; }
+.daily-literary-line { margin: 16px 0 0; padding: 0 0 18px; border-bottom: 1px solid var(--line); color: var(--ink); }
+.literary-eyebrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font: 11px Georgia, serif; letter-spacing: .07em; }
+.literary-eyebrow button { min-height: 44px; padding: 0 8px; border: 0; background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; }
+.literary-disclosure summary { list-style: none; cursor: pointer; padding: 4px 0 10px; border-radius: 6px; }
+.literary-disclosure summary::-webkit-details-marker { display: none; }
+.literary-disclosure summary:focus-visible { outline: 2px solid var(--sage); outline-offset: 4px; }
+.daily-literary-line blockquote, .literary-library-item blockquote { margin: 0 0 12px; font: 20px/1.5 Georgia, 'Times New Roman', serif; white-space: pre-line; overflow-wrap: anywhere; }
+.daily-literary-line blockquote::before { content: '“'; color: var(--sage); margin-right: 3px; }
+.daily-literary-line blockquote::after { content: '”'; color: var(--sage); margin-left: 3px; }
+.daily-literary-line cite, .literary-library-item cite { display: block; font: 11px/1.6 Georgia, serif; color: var(--muted); overflow-wrap: anywhere; }
+.literary-details { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.literary-translation { margin: 0 0 14px; color: var(--ink); font-size: 14px; line-height: 1.7; }
+.literary-details dl { margin: 0; display: grid; gap: 7px; font-size: 12px; line-height: 1.6; }
+.literary-details dl div { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px; }
+.literary-details dt { color: var(--muted); }
+.literary-details dd { margin: 0; overflow-wrap: anywhere; }
+.literary-source { display: inline-flex; align-items: center; min-height: 44px; font-size: 11px; color: var(--muted); text-underline-offset: 3px; }
+.literary-details-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 11px; color: var(--muted); }
+.literary-favorite { background: transparent; color: var(--ink); border: 0; padding: 10px 4px; min-height: 44px; flex-shrink: 0; cursor: pointer; }
+.literary-favorite span { font-size: 23px; color: var(--sage); vertical-align: middle; }
+.library-filter { margin-bottom: 26px; }
+.literary-library-item { padding: 22px 0; border-bottom: 1px solid var(--line); }
+.lumina-library h1 { font-family: Georgia, serif; font-size: clamp(28px, 8vw, 40px) !important; letter-spacing: -.02em; }
+.literary-empty { padding: 32px 6px; color: var(--muted); font-size: 14px; line-height: 1.8; }

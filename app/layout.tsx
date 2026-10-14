@@ -3,8 +3,8 @@ import ServiceWorkerRegistration from "./service-worker-registration";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "生活重启计划",
-  description: "30天暑假生活重启每日计划与习惯打卡",
+  title: "Lumina",
+  description: "每日计划与文学相伴",
   manifest: "/manifest.json",
   icons: {
     icon: "/app-icon.svg",
