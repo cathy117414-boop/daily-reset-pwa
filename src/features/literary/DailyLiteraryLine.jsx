@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { categoryLabels, literaryQuotes } from '../../data/literaryQuotes.ts';
 import { getDailyQuote } from '../../literary.ts';
 import './literary.css';
+import { decorationProps } from '../../config/decorations.js';
+import { ThemeSticker } from '../theme-settings/ThemeDecoration';
 
 function FavoriteButton({ quote, favorites, onToggle }) {
   const saved = favorites.includes(quote.id);
@@ -19,10 +21,11 @@ function QuoteDetails({ quote, favorites, onToggle }) {
   </div>;
 }
 
-export function DailyLiteraryLine({ dateKey, favorites, onToggle, onLibrary }) {
+export function DailyLiteraryLine({ dateKey, favorites, onToggle, onLibrary, decorations }) {
   const quote = getDailyQuote(dateKey);
-  return <section className="daily-literary-line" aria-label="A Line for Today" key={quote.id}>
-    <div className="literary-eyebrow"><span lang="en">A Line for Today</span><button onClick={onLibrary} aria-label="打开 Lumina Library">Library <span aria-hidden="true">↗</span></button></div>
+  const ornament = decorationProps(decorations).quote;
+  return <section className="daily-literary-line" data-quote-style={ornament?.style} style={ornament ? { '--quote-ink': ornament.color, borderBottomStyle: ornament.divider } : undefined} aria-label="A Line for Today" key={quote.id}>
+    <div className="literary-eyebrow"><span lang="en">A Line for Today</span><ThemeSticker material={ornament?.doodle} className="literary-doodle" /><button onClick={onLibrary} aria-label="打开 Lumina Library">Library <span aria-hidden="true">↗</span></button></div>
     <details className="literary-disclosure">
       <summary aria-label={`展开文学句子：${quote.quote}`}>
         <blockquote lang="en">{quote.quote}</blockquote>

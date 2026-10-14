@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { CheckIcon } from "../../icons";
 import { THEMES, themeAssetUrl } from "../../config/themes.js";
+import { decorationProps } from "../../config/decorations.js";
+import { ThemeSticker, ThemeTape } from "./ThemeDecoration";
 
 function ThemePreviewCard({ theme, activeThemeId, savedThemeId, onPreview }) {
   const isActive = activeThemeId === theme.id;
   const isSaved = savedThemeId === theme.id;
   const [imageFailed, setImageFailed] = useState(false);
+  const decorations = decorationProps(theme.decorations);
   const style = {
     "--preview-primary": theme.primary,
     "--preview-accent": theme.accent,
@@ -26,11 +29,13 @@ function ThemePreviewCard({ theme, activeThemeId, savedThemeId, onPreview }) {
         {imageFailed ? <span className="theme-thumbnail-fallback" role="img" aria-label={`${theme.name}主题预览`} /> : (
           <img src={themeAssetUrl(theme.thumbnailImage)} alt={`${theme.name}主题预览`} decoding="async" onError={() => setImageFailed(true)} />
         )}
+        <ThemeTape material={decorations.tape} />
+        <ThemeSticker material={decorations.sticker} className="theme-preview-sticker" />
       </span>
       <span className="theme-card-body">
         <span className="theme-card-title">
           <strong>{theme.name}</strong>
-          <span className={`theme-current ${isActive ? "" : "theme-current--empty"}`} aria-hidden={!isActive}>
+          <span className={`theme-current ${decorations.sticker ? "theme-current--sticker" : ""} ${isActive ? "" : "theme-current--empty"}`} aria-hidden={!isActive}>
             <CheckIcon size={15} />{isSaved ? "使用中" : "预览中"}
           </span>
         </span>

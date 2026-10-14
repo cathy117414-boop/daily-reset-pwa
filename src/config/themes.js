@@ -26,6 +26,13 @@ export const THEMES = Object.freeze([
     mascotImage: "themes/cream-puppy/mascot.webp",
     completedImage: "themes/cream-puppy/completed.webp",
     thumbnailImage: "themes/cream-puppy/thumbnail.webp",
+    decorations: {
+      tape: { style: "gingham", color: "#D8E9EF", ink: "#94B7C7" },
+      primarySticker: { shape: "star", color: "#C28A36" },
+      sectionIconStyle: "rounded",
+      quoteDecorationStyle: { style: "handwritten", color: "#B87932", doodle: "star", divider: "dashed" },
+      progressCardDecoration: { shape: "star", color: "#C28A36" },
+    },
   },
   {
     id: "kitty",
@@ -52,6 +59,13 @@ export const THEMES = Object.freeze([
     mascotImage: "themes/pink-kitten/mascot.webp",
     completedImage: "themes/pink-kitten/completed.webp",
     thumbnailImage: "themes/pink-kitten/thumbnail.webp",
+    decorations: {
+      tape: { style: "washi", color: "#F4CDD9", ink: "#D99AB0" },
+      primarySticker: { shape: "bow", color: "#C96F8D" },
+      sectionIconStyle: "fine",
+      quoteDecorationStyle: { style: "slender", color: "#C96F8D", doodle: "heart", divider: "dotted" },
+      progressCardDecoration: { shape: "heart", color: "#C96F8D" },
+    },
   },
   {
     id: "miffy",
@@ -78,6 +92,13 @@ export const THEMES = Object.freeze([
     mascotImage: "themes/minimal-rabbit/mascot.webp",
     completedImage: "themes/minimal-rabbit/completed.webp",
     thumbnailImage: "themes/minimal-rabbit/thumbnail.webp",
+    decorations: {
+      tape: { style: "paper", color: "#EDE8DA", ink: "#C9C1AC" },
+      primarySticker: { shape: "dot", color: "#D7773F" },
+      sectionIconStyle: "minimal",
+      quoteDecorationStyle: { style: "minimal", color: "#707575", doodle: "dot", divider: "solid" },
+      progressCardDecoration: { shape: "dot", color: "#D7773F" },
+    },
   },
   {
     id: "bearisbug",
@@ -104,6 +125,13 @@ export const THEMES = Object.freeze([
     mascotImage: "themes/bear-bug/mascot.webp",
     completedImage: "themes/bear-bug/completed.webp",
     thumbnailImage: "themes/bear-bug/thumbnail.webp",
+    decorations: {
+      tape: { style: "kraft", color: "#D7BC92", ink: "#AF8E62" },
+      primarySticker: { shape: "leaf", color: "#6A8868" },
+      sectionIconStyle: "natural",
+      quoteDecorationStyle: { style: "handwritten", color: "#6A8868", doodle: "leaf", divider: "dashed" },
+      progressCardDecoration: { shape: "leaf", color: "#6A8868" },
+    },
   },
 ]);
 

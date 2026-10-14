@@ -54,7 +54,7 @@ function TaskForm({ initial = emptyTask, onSave, onClose }) {
   );
 }
 
-function DayPage({ title, date, state, setState, isToday, onLibrary, onFavorite }) {
+function DayPage({ title, date, state, setState, isToday, onLibrary, onFavorite, decorations }) {
   const dateKey = getDateKey(date);
   const tasks = state.days[dateKey]?.tasks || [];
   const waterDay = state.waterDays?.[dateKey];
@@ -87,7 +87,7 @@ function DayPage({ title, date, state, setState, isToday, onLibrary, onFavorite 
         <header className="lumina-header">
           <div className="date-line">{formatHeaderDate(date)}</div>
           <h1 className="lumina-brand" lang="en">Lumina</h1>
-          <DailyLiteraryLine dateKey={dateKey} favorites={state.literaryFavorites} onToggle={onFavorite} onLibrary={onLibrary} />
+          <DailyLiteraryLine dateKey={dateKey} favorites={state.literaryFavorites} onToggle={onFavorite} onLibrary={onLibrary} decorations={decorations} />
         </header>
       ) : (
         <header className="page-header">
@@ -96,7 +96,7 @@ function DayPage({ title, date, state, setState, isToday, onLibrary, onFavorite 
           <p>提前想好一点，明天就从容一点。</p>
         </header>
       )}
-      {isToday ? <ProgressPanel {...progress} /> : null}
+      {isToday ? <ProgressPanel {...progress} decorations={decorations} /> : null}
       {isToday && waterDay ? (
         <WaterCard
           day={waterDay}
@@ -311,7 +311,7 @@ export default function App() {
   }, [currentDateKey]);
 
   let page;
-  if (active === "today") page = <DayPage title="今日" date={new Date(`${currentDateKey}T12:00:00`)} state={state} setState={setState} isToday onLibrary={() => setActive('library')} onFavorite={favorite} />;
+  if (active === "today") page = <DayPage title="今日" date={new Date(`${currentDateKey}T12:00:00`)} state={state} setState={setState} isToday onLibrary={() => setActive('library')} onFavorite={favorite} decorations={theme.activeTheme.decorations} />;
   if (active === "tomorrow") page = <DayPage title="明日计划" date={addDays(new Date(), 1)} state={state} setState={setState} />;
   if (active === "habits") page = <HabitsPage state={state} setState={setState} />;
   if (active === "workouts") page = <WorkoutsPage state={state} setState={setState} />;

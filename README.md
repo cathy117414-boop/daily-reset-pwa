@@ -134,3 +134,25 @@ daily-reset-pwa/
 ## 后续可选升级
 
 数据导入导出、提醒通知、30 天总览和云端同步都可以在后续版本增加；当前版本刻意不包含登录、社交和付费功能。
+
+## 主题装饰 · 第一阶段
+
+装饰仅应用于主题中心、首页 A Line for Today、今日进度卡，不扩展到其他页面。
+在 `src/config/themes.js` 的每套主题中配置 `decorations`：
+
+```js
+decorations: {
+  tape: { style: 'gingham', color: '#D8E9EF', ink: '#94B7C7' },
+  primarySticker: { shape: 'star', color: '#C28A36' },
+  sectionIconStyle: 'rounded',
+  quoteDecorationStyle: { style: 'handwritten', color: '#B87932', doodle: 'star', divider: 'dashed' },
+  progressCardDecoration: { shape: 'star', color: '#C28A36' },
+}
+```
+
+胶带支持 `gingham / washi / paper / kraft`；贴纸支持 `star / bow / heart / dot / leaf`；
+标题图标支持 `rounded / fine / minimal / natural`；引号支持 `handwritten / slender / minimal`。
+渲染组件只识别这些通用样式，不按主题 ID 写判断。新增主题可复用相同配置。
+缺省或未知材料不会渲染，恢复原有纯色布局。第一阶段全部素材为本地 CSS 和内联 SVG，
+不请求网络图片，不引入动画（包括 reduced motion 模式），随构建后的 CSS/JS 一起离线缓存。
+所有装饰均 `aria-hidden`、`pointer-events: none`，不遮挡操作区域；切换仍使用原有预览、保存和 localStorage 机制。

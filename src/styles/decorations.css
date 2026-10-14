@@ -1,0 +1,31 @@
+/* Phase one only. All motifs are local CSS/SVG, decorative and non-interactive. */
+.theme-ornament { display: block; flex: 0 0 auto; width: 24px; height: 24px; pointer-events: none; user-select: none; }
+.theme-ornament[data-shape="star"], .theme-ornament[data-shape="heart"], .theme-ornament[data-shape="bow"] { fill: color-mix(in srgb, currentColor 16%, transparent); }
+.theme-ornament[data-shape="dot"] { fill: currentColor; stroke: none; }
+.theme-ornament[data-shape="leaf"] { fill: color-mix(in srgb, currentColor 12%, transparent); }
+.theme-tape { position: absolute; z-index: 1; top: 7px; left: 50%; width: 58px; height: 17px; transform: translateX(-50%) rotate(-5deg); background-color: var(--tape-color); opacity: .88; pointer-events: none; clip-path: polygon(3% 0, 98% 3%, 96% 25%, 100% 48%, 96% 73%, 98% 100%, 0 96%, 3% 70%, 0 47%, 4% 23%); }
+.theme-tape[data-tape="gingham"] { background-image: repeating-linear-gradient(90deg, transparent 0 5px, color-mix(in srgb, var(--tape-ink) 45%, transparent) 5px 8px), repeating-linear-gradient(0deg, transparent 0 5px, color-mix(in srgb, var(--tape-ink) 45%, transparent) 5px 8px); }
+.theme-tape[data-tape="washi"] { background-image: radial-gradient(var(--tape-ink) .6px, transparent .8px); background-size: 7px 7px; transform: translateX(-50%) rotate(4deg); }
+.theme-tape[data-tape="paper"] { height: 14px; transform: translateX(-50%) rotate(-2deg); }
+.theme-tape[data-tape="kraft"] { background-image: repeating-linear-gradient(15deg, transparent 0 3px, color-mix(in srgb, var(--tape-ink) 20%, transparent) 3px 4px); }
+.theme-preview-sticker { position: absolute; z-index: 1; bottom: 8px; right: 8px; width: 25px; height: 25px; background: var(--preview-card); padding: 3px; border-radius: 8px; transform: rotate(8deg); }
+.theme-current--sticker { padding: 2px 6px; border: 1px dashed var(--preview-border); border-radius: 6px; background: var(--preview-background); }
+.literary-doodle { margin-left: auto; width: 17px; height: 17px; opacity: .8; }
+.daily-literary-line[data-quote-style] { border-bottom-color: color-mix(in srgb, var(--quote-ink) 30%, var(--line)); }
+.daily-literary-line[data-quote-style] blockquote::before, .daily-literary-line[data-quote-style] blockquote::after { color: var(--quote-ink); }
+.daily-literary-line[data-quote-style="handwritten"] blockquote::before, .daily-literary-line[data-quote-style="handwritten"] blockquote::after { display: inline-block; font-family: 'Segoe Print', 'Bradley Hand', cursive; font-style: italic; transform: rotate(-8deg); }
+.daily-literary-line[data-quote-style="slender"] blockquote::before, .daily-literary-line[data-quote-style="slender"] blockquote::after { font-family: 'Times New Roman', serif; font-weight: 400; }
+.daily-literary-line[data-quote-style="minimal"] blockquote::before { content: '「'; font: .8em system-ui, sans-serif; }
+.daily-literary-line[data-quote-style="minimal"] blockquote::after { content: '」'; font: .8em system-ui, sans-serif; }
+.progress-panel { position: relative; }
+.progress-title { display: flex; align-items: center; gap: 7px; }
+.theme-section-icon { width: 21px; height: 21px; color: var(--sage); }
+.theme-section-icon[data-icon-style="rounded"] { stroke-width: 2; fill: color-mix(in srgb, currentColor 10%, transparent); }
+.theme-section-icon[data-icon-style="fine"] { stroke-width: 1.1; }
+.theme-section-icon[data-icon-style="minimal"] { color: var(--ink); stroke-linecap: square; stroke-linejoin: miter; }
+.theme-section-icon[data-icon-style="natural"] { transform: rotate(-7deg); stroke-width: 1.4; }
+.progress-corner-sticker { position: absolute; top: 6px; right: 10px; width: 18px; height: 18px; transform: rotate(9deg); }
+/* No motion is introduced, including with prefers-reduced-motion enabled. */
+@media (prefers-color-scheme: dark) {
+  .daily-literary-line[data-quote-style] blockquote::before, .daily-literary-line[data-quote-style] blockquote::after { color: color-mix(in srgb, var(--quote-ink) 65%, var(--ink)); }
+}

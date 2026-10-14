@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { decorationProps } from "./config/decorations.js";
+import { ThemeSticker, ThemeSectionIcon } from "./features/theme-settings/ThemeDecoration";
 import {
   CalendarIcon,
   ChartIcon,
@@ -40,12 +42,14 @@ export function BottomNav({ active, onChange }) {
   );
 }
 
-export function ProgressPanel({ completed, total, percent }) {
+export function ProgressPanel({ completed, total, percent, decorations }) {
   const progressStyle = { "--progress": `${percent * 3.6}deg` };
+  const ornament = decorationProps(decorations);
   return (
     <section className="progress-panel" aria-label={`今日完成进度 ${percent}%`}>
+      <ThemeSticker material={ornament.progress} className="progress-corner-sticker" />
       <div>
-        <h2>今日进度</h2>
+        <h2 className="progress-title"><ThemeSectionIcon style={ornament.icon} />今日进度</h2>
         <p className="progress-count"><strong>{completed}</strong> / {total} <span>已完成</span></p>
         <div className="linear-progress" aria-hidden="true"><span style={{ width: `${percent}%` }} /></div>
       </div>
