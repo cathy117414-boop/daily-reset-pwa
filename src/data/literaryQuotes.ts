@@ -30,7 +30,7 @@ const austen: [string, string, LiteraryCategory, string][] = [
   ['3', 'To be fond of dancing was a certain step towards falling in love;', 'love', '喜欢跳舞，是迈向爱情的一步。'],
   ['6', 'Happiness in marriage is entirely a matter of chance.', 'life', '婚姻中的幸福完全是运气问题。这是人物夏洛特的看法。'],
   ['11', 'there is no enjoyment like reading!', 'everyday', '没有什么乐趣能比得上阅读！这是人物的对白节选。'],
-  ['9', 'People themselves alter so much, that there is something new to be observed in them for ever.', 'growth', '人们总在改变，因此我们总能从他们身上发现新的东西。'],
+  ['9', 'people themselves alter so much, that there is something new to be observed in them for ever.', 'growth', '人们总在改变，因此我们总能从他们身上发现新的东西。'],
   ['11', 'My good opinion once lost is lost for ever.', 'life', '我的好感一旦失去，就永远失去了。这是达西当时的自述。'],
   ['34', 'In vain have I struggled.', 'courage', '我曾努力抗拒，却徒劳无功。'],
   ['36', 'Till this moment, I never knew myself.', 'growth', '直到这一刻，我才真正认识自己。'],
@@ -41,7 +41,7 @@ const austen: [string, string, LiteraryCategory, string][] = [
 const dickens: [string, string, LiteraryCategory, string][] = [
   ['1', 'Mankind was my business.', 'life', '关怀人类，本该是我的职责。'],
   ['2', 'The happiness he gives, is quite as great as if it cost a fortune.', 'everyday', '他带来的快乐，就像花费一大笔钱所能带来的一样多。'],
-  ['3', 'There is nothing in the world so irresistibly contagious as laughter and good-humour.', 'hope', '世上没有什么比笑声与好心情更有感染力。'],
+  ['3', 'there is nothing in the world so irresistibly contagious as laughter and good-humour.', 'hope', '世上没有什么比笑声与好心情更有感染力。'],
   ['4', 'I will honour Christmas in my heart, and try to keep it all the year.', 'growth', '我会在心里珍惜圣诞的精神，并努力让它贯穿全年。'],
   ['4', 'I will live in the Past, the Present, and the Future.', 'time', '我会铭记过去，活在当下，也心怀未来。'],
 ];
