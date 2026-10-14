@@ -3,6 +3,7 @@ import { CheckIcon } from "../../icons";
 import { THEMES, themeAssetUrl } from "../../config/themes.js";
 import { decorationProps } from "../../config/decorations.js";
 import { ThemeSticker, ThemeTape } from "./ThemeDecoration";
+import { textureVariables } from "../../config/textures.js";
 
 function ThemePreviewCard({ theme, activeThemeId, savedThemeId, onPreview }) {
   const isActive = activeThemeId === theme.id;
@@ -10,6 +11,7 @@ function ThemePreviewCard({ theme, activeThemeId, savedThemeId, onPreview }) {
   const [imageFailed, setImageFailed] = useState(false);
   const decorations = decorationProps(theme.decorations);
   const style = {
+    ...textureVariables(theme.decorations?.texture),
     "--preview-primary": theme.primary,
     "--preview-accent": theme.accent,
     "--preview-background": theme.background,
@@ -31,6 +33,7 @@ function ThemePreviewCard({ theme, activeThemeId, savedThemeId, onPreview }) {
         )}
         <ThemeTape material={decorations.tape} />
         <ThemeSticker material={decorations.sticker} className="theme-preview-sticker" />
+        <ThemeSticker material={decorations.previewDoodle} className="theme-preview-doodle theme-doodle" />
       </span>
       <span className="theme-card-body">
         <span className="theme-card-title">

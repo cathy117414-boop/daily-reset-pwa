@@ -48,6 +48,7 @@ export function ProgressPanel({ completed, total, percent, decorations }) {
   return (
     <section className="progress-panel" aria-label={`今日完成进度 ${percent}%`}>
       <ThemeSticker material={ornament.progress} className="progress-corner-sticker" />
+      <ThemeSticker material={ornament.progressDoodle} className="progress-doodle theme-doodle" />
       <div>
         <h2 className="progress-title"><ThemeSectionIcon style={ornament.icon} />今日进度</h2>
         <p className="progress-count"><strong>{completed}</strong> / {total} <span>已完成</span></p>

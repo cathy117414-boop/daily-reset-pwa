@@ -137,7 +137,7 @@ daily-reset-pwa/
 
 ## 主题装饰 · 第一阶段
 
-装饰仅应用于主题中心、首页 A Line for Today、今日进度卡，不扩展到其他页面。
+视觉层仅应用于 App 主背景、主题中心、首页 A Line for Today、今日进度卡；不改变其他页面的内容卡片。
 在 `src/config/themes.js` 的每套主题中配置 `decorations`：
 
 ```js
@@ -159,18 +159,46 @@ decorations: {
 
 ### 首页贴纸素材包
 
-`public/decorations/` 包含 12 个原创透明 SVG，均无字体、外部引用或脚本：
+`public/decorations/` 包含 29 个原创透明 SVG（已有 12 个，新增纸片贴纸 1 个和细线 doodle 16 个），均无字体、外部引用或脚本：
 
 | 目录 | 主贴纸 / 辅助素材 | 胶带 |
 | --- | --- | --- |
 | cream | star.svg、pudding.svg | 浅蓝格纹 tape.svg |
 | pink | bow.svg、hearts.svg | 粉色和纸 tape.svg |
-| minimal | sun.svg、flower.svg | 米白纸 tape.svg |
+| minimal | sun.svg、paper-note.svg、flower.svg（保留） | 米白纸 tape.svg |
 | nature | leaf.svg、mushroom.svg | 牛皮纸 tape.svg |
 
-本次仅首页接入图片素材。主题中心保留现有 CSS 胶带与预览贴纸，胶带 SVG 路径存于 `tape.asset`，不改变其布局或外观。
+主题中心保留 CSS 胶带，调整至统一轻透明度；预览区角落使用一张真实贴纸和一个低透明度 doodle，不改 4:3 比例和选中态尺寸。
 `quoteDecorationStyle.sticker` 与 `quoteDecorationStyle.doodle` 接受 `{ asset: 'decorations/pink/bow.svg', size: 36 }`；
 `progressCardDecoration` 使用相同结构。`size` 限定 12–48px，路径仅允许上述本地 SVG 目录。
 旧的 `{ shape, color }` 写法仍兼容；素材加载失败时移除该图片，不显示破图。
-文学句子标题行内最多 1 主贴纸 + 1 辅助素材，保留 Library 触控区；进度卡保留 section icon，边缘仅 1 张贴纸。
-贴纸不参与布局高度计算，不修改引文、进度、饮水、导航或本地数据逻辑；构建自动将 12 个 SVG 加入 Service Worker 离线清单。
+文学句子标题行内最多 1 主贴纸 + 1 辅助 doodle，保留 Library 触控区；进度卡保留 section icon，边缘使用 1 贴纸 + 1 doodle。
+贴纸统一轻白边、轻阴影；doodle 无投影、透明度更低。不修改引文、进度、饮水、导航或本地数据逻辑；构建自动将全部 SVG 加入 Service Worker 离线清单。
+
+### 材质 / 贴纸 / doodle 三层系统
+
+`decorations.texture` 配置主材质、辅助材质、色彩、强度和缩放，例如：
+
+```js
+texture: {
+  primaryType: 'gingham', secondaryType: 'paper-fiber',
+  opacity: 0.06, secondaryOpacity: 0.035, scale: 1, color: '#8CAEBB',
+}
+```
+
+`src/config/textures.js` 生成 CSS 渐变变量，不按主题 ID 分支，不需要网络材质图。
+主底纹支持 `gingham / pin-dots / horizontal-grain / speckles`，辅助底纹支持
+`paper-fiber / washi-fiber / fine-grid / botanical-fiber`。主强度限制 0–0.14、辅助强度 0–0.09，缺少或无效配置回退 `none`。
+App 背景使用 0.7 层透明度，文学区 0.42，进度与主题卡 0.36；材质通过绝对定位伪元素铺在内容下方，不改变高度或点击区域。
+
+`decorations.doodles` 保存四个小素材描述；`previewDoodle`、`progressDoodle` 仅引用其键值，
+`primarySticker` 用于主题卡，`quoteDecorationStyle` 与 `progressCardDecoration` 继续控制首页两处装饰。
+
+| 主题 | 主材质 + 辅助材质 | 文学区 | 进度卡 | 四个 doodle 文件（均以 doodle- 开头） |
+| --- | --- | --- | --- | --- |
+| cream | 浅蓝宽格 + 纸颗粒短纤维 | 布丁 + 星星线稿 | 星星 + 三点 | star、dots、curve、heart |
+| pink | 小针点 + 和纸短纤维 | 蝴蝶结 + 心线稿 | 心组合 + 小花 | heart、flower、curve、dots |
+| minimal | 哑光横纹 + 稀疏细格 | 小太阳 + 单线花 | 小纸片 + 短横线 | flower、dots、line、corner |
+| nature | 再生纸颗粒 + 短植物纤维 | 叶贴纸 + 小枝条 | 蘑菇 + 叶片线稿 | leaf、branch、dots、curve |
+
+仅从上述素材选择组合，不把全部 doodle 同时铺满页面。App 背景没有贴纸；饮水、健身和回顾内容未加入材质或装饰。所有层均为静态，尊重 reduced motion。

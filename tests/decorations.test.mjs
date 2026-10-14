@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { THEMES } from '../src/config/themes.js';
 import { decorationProps, stickerProps } from '../src/config/decorations.js';
 import { readFileSync, readdirSync } from 'node:fs';
+import { textureVariables } from '../src/config/textures.js';
 
 test('all four themes configure each phase-one decoration', () => {
   for (const theme of THEMES) {
@@ -24,11 +25,12 @@ test('local sticker material paths and sizes are constrained, retaining legacy s
   assert.equal(legacy.quote.doodle.shape, 'heart');
 });
 
-test('each theme has two local transparent SVG decorations and a tape asset', () => {
+test('every configured sticker and doodle has a safe lightweight local SVG', () => {
   const materials = new Set();
   for (const theme of THEMES) {
     const quote = theme.decorations.quoteDecorationStyle;
-    for (const material of [quote.sticker, quote.doodle, theme.decorations.progressCardDecoration, theme.decorations.tape]) {
+    assert.equal(Object.keys(theme.decorations.doodles).length, 4);
+    for (const material of [theme.decorations.primarySticker, quote.sticker, quote.doodle, theme.decorations.progressCardDecoration, theme.decorations.tape, ...Object.values(theme.decorations.doodles)]) {
       const svg = readFileSync(`public/${material.asset}`, 'utf8');
       assert.match(svg, /viewBox="0 0 (80 80|120 36)"/);
       assert.doesNotMatch(svg, /<script|<image|<foreignObject|href=|https?:\/\/(?!www\.w3\.org\/2000\/svg)/);
@@ -36,14 +38,39 @@ test('each theme has two local transparent SVG decorations and a tape asset', ()
       materials.add(material.asset);
     }
   }
-  assert.equal(materials.size, 12);
-  for (const folder of ['cream', 'pink', 'minimal', 'nature']) assert.equal(readdirSync(`public/decorations/${folder}`).length, 3);
+  assert.equal(materials.size, 28);
+  assert.equal(['cream', 'pink', 'minimal', 'nature'].reduce((sum, folder) => sum + readdirSync(`public/decorations/${folder}`).length, 0), 29);
 });
 
 test('missing or unknown decoration materials degrade to the plain theme', () => {
-  const plain = { tape: null, sticker: null, progress: null, icon: undefined, quote: null };
+  const plain = { tape: null, sticker: null, progress: null, previewDoodle: null, progressDoodle: null, icon: undefined, quote: null };
   assert.deepEqual(decorationProps(), plain);
   assert.deepEqual(decorationProps({ tape: { style: 'missing-image.webp' }, primarySticker: { shape: 'unknown' }, sectionIconStyle: 'unknown', quoteDecorationStyle: { style: 'unknown' } }), plain);
   assert.equal(stickerProps(null), null);
   assert.deepEqual(stickerProps({ shape: 'leaf', color: 'url(missing.webp)' }), { shape: 'leaf', color: 'currentColor' });
+});
+
+test('four subtle CSS texture families, no external resources and safe plain fallback', () => {
+  const families = new Set();
+  for (const theme of THEMES) {
+    const vars = textureVariables(theme.decorations.texture);
+    assert.notEqual(vars['--journal-texture-image'], 'none');
+    assert.doesNotMatch(vars['--journal-texture-image'], /url\(|https?:|NaN/);
+    let depth = 0, layers = 1;
+    for (const char of vars['--journal-texture-image']) {
+      if (char === '(') depth++;
+      if (char === ')') depth--;
+      if (char === ',' && depth === 0) layers++;
+    }
+    assert.equal(layers, vars['--journal-texture-size'].split(',').length);
+    families.add(theme.decorations.texture.primaryType);
+    assert.ok(theme.decorations.texture.opacity <= .14);
+  }
+  assert.equal(families.size, 4);
+  assert.equal(textureVariables()['--journal-texture-image'], 'none');
+  assert.equal(textureVariables({ primaryType: 'unknown', color: '#123456' })['--journal-texture-image'], 'none');
+  assert.equal(textureVariables({ primaryType: 'gingham', color: 'url(remote)' })['--journal-texture-image'], 'none');
+  const clamped = textureVariables({ primaryType: 'gingham', color: '#123456', scale: 900, opacity: 900 });
+  assert.match(clamped['--journal-texture-image'], /14%/);
+  assert.doesNotMatch(clamped['--journal-texture-image'], /900/);
 });

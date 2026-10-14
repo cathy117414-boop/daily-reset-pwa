@@ -17,6 +17,8 @@ export function decorationProps(decorations) {
       ? { style: tape.style, color: color(tape.color), ink: color(tape.ink) } : null,
     sticker: stickerProps(decorations?.primarySticker),
     progress: stickerProps(decorations?.progressCardDecoration),
+    previewDoodle: stickerProps(decorations?.doodles?.[decorations?.previewDoodle]),
+    progressDoodle: stickerProps(decorations?.doodles?.[decorations?.progressDoodle]),
     icon: ["rounded", "fine", "minimal", "natural"].includes(decorations?.sectionIconStyle)
       ? decorations.sectionIconStyle : undefined,
     quote: ["handwritten", "slender", "minimal"].includes(quote?.style)

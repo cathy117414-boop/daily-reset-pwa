@@ -119,7 +119,7 @@
   overflow: hidden;
   background-color: var(--preview-background);
 }
-.theme-thumbnail img {
+.theme-thumbnail > img:not(.theme-ornament) {
   display: block;
   width: 100%;
   height: 100%;
@@ -129,11 +129,11 @@
   object-position: center;
 }
 /* Normalize the whitespace already embedded in the supplied artwork, without editing it. */
-.theme-preview-card--pompompurin .theme-thumbnail img { transform: scale(1.75); }
-.theme-preview-card--kitty .theme-thumbnail img { transform: scale(1.45); }
-.theme-preview-card--miffy .theme-thumbnail img { transform: scale(1.15); }
+.theme-preview-card--pompompurin .theme-thumbnail > img:not(.theme-ornament) { transform: scale(1.75); }
+.theme-preview-card--kitty .theme-thumbnail > img:not(.theme-ornament) { transform: scale(1.45); }
+.theme-preview-card--miffy .theme-thumbnail > img:not(.theme-ornament) { transform: scale(1.15); }
 /* Keep the bear's antennae, plants and feet intact. The theme background fills the sides. */
-.theme-preview-card--bearisbug .theme-thumbnail img { object-fit: contain; }
+.theme-preview-card--bearisbug .theme-thumbnail > img:not(.theme-ornament) { object-fit: contain; }
 .theme-thumbnail-fallback { display: block; width: 100%; height: 100%; background: var(--preview-background); }
 .theme-card-body { display: grid; gap: 11px; padding: 13px; }
 .theme-card-title { display: grid; gap: 7px; }

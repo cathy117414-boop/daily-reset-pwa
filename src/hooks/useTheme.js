@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { DEFAULT_THEME_ID, getTheme, normalizeThemeId, themeAssetUrl } from "../config/themes.js";
+import { textureVariables } from "../config/textures.js";
 
 function themeVariables(theme) {
   return {
+    ...textureVariables(theme.decorations?.texture),
     "--color-primary": theme.primary,
     "--color-primary-dark": theme.primaryDark,
     "--color-background": theme.background,
