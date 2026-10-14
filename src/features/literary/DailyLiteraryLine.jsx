@@ -25,7 +25,7 @@ export function DailyLiteraryLine({ dateKey, favorites, onToggle, onLibrary, dec
   const quote = getDailyQuote(dateKey);
   const ornament = decorationProps(decorations).quote;
   return <section className="daily-literary-line" data-quote-style={ornament?.style} style={ornament ? { '--quote-ink': ornament.color, borderBottomStyle: ornament.divider } : undefined} aria-label="A Line for Today" key={quote.id}>
-    <div className="literary-eyebrow"><span lang="en">A Line for Today</span><ThemeSticker material={ornament?.doodle} className="literary-doodle" /><button onClick={onLibrary} aria-label="打开 Lumina Library">Library <span aria-hidden="true">↗</span></button></div>
+    <div className="literary-eyebrow"><span lang="en">A Line for Today</span><span className="literary-stickers" aria-hidden="true"><ThemeSticker material={ornament?.sticker} className="literary-main-sticker" /><ThemeSticker material={ornament?.doodle} className="literary-doodle" /></span><button onClick={onLibrary} aria-label="打开 Lumina Library">Library <span aria-hidden="true">↗</span></button></div>
     <details className="literary-disclosure">
       <summary aria-label={`展开文学句子：${quote.quote}`}>
         <blockquote lang="en">{quote.quote}</blockquote>

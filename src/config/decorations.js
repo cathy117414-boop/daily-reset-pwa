@@ -1,8 +1,11 @@
 const shapes = new Set(["star", "bow", "heart", "dot", "leaf"]);
 const color = (value) => /^#[\da-f]{6}$/i.test(value || "") ? value : "currentColor";
+const localAsset = (value) => /^decorations\/(cream|pink|minimal|nature)\/[a-z-]+\.svg$/.test(value || "") ? value : undefined;
 
 // Unknown or absent materials deliberately render nothing: the plain theme remains usable.
 export function stickerProps(material) {
+  const asset = localAsset(material?.asset);
+  if (asset) return { asset, size: Number.isFinite(material.size) ? Math.max(12, Math.min(48, material.size)) : 32 };
   return shapes.has(material?.shape) ? { shape: material.shape, color: color(material.color) } : null;
 }
 
@@ -19,6 +22,7 @@ export function decorationProps(decorations) {
     quote: ["handwritten", "slender", "minimal"].includes(quote?.style)
       ? { style: quote.style, color: color(quote.color),
         divider: ["solid", "dashed", "dotted"].includes(quote.divider) ? quote.divider : "solid",
-        doodle: stickerProps({ shape: quote.doodle, color: quote.color }) } : null,
+        sticker: stickerProps(quote.sticker),
+        doodle: stickerProps(typeof quote.doodle === "string" ? { shape: quote.doodle, color: quote.color } : quote.doodle) } : null,
   };
 }

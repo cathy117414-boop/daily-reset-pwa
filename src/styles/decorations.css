@@ -11,6 +11,11 @@
 .theme-preview-sticker { position: absolute; z-index: 1; bottom: 8px; right: 8px; width: 25px; height: 25px; background: var(--preview-card); padding: 3px; border-radius: 8px; transform: rotate(8deg); }
 .theme-current--sticker { padding: 2px 6px; border: 1px dashed var(--preview-border); border-radius: 6px; background: var(--preview-background); }
 .literary-doodle { margin-left: auto; width: 17px; height: 17px; opacity: .8; }
+.theme-sticker-asset { width: var(--sticker-size); height: var(--sticker-size); object-fit: contain; filter: drop-shadow(0 1px 1px rgb(60 40 20 / .12)); }
+.literary-stickers { display: flex; align-items: center; justify-content: flex-end; gap: 2px; margin-left: auto; height: 36px; flex: 0 0 auto; pointer-events: none; }
+.literary-main-sticker { transform: rotate(-9deg); }
+.literary-stickers .literary-doodle { margin-left: -4px; opacity: 1; transform: rotate(7deg); }
+.progress-corner-sticker.theme-sticker-asset { top: -12px; right: 12px; width: var(--sticker-size); height: var(--sticker-size); transform: rotate(8deg); }
 .daily-literary-line[data-quote-style] { border-bottom-color: color-mix(in srgb, var(--quote-ink) 30%, var(--line)); }
 .daily-literary-line[data-quote-style] blockquote::before, .daily-literary-line[data-quote-style] blockquote::after { color: var(--quote-ink); }
 .daily-literary-line[data-quote-style="handwritten"] blockquote::before, .daily-literary-line[data-quote-style="handwritten"] blockquote::after { display: inline-block; font-family: 'Segoe Print', 'Bradley Hand', cursive; font-style: italic; transform: rotate(-8deg); }

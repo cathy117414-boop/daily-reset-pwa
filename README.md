@@ -153,6 +153,24 @@ decorations: {
 胶带支持 `gingham / washi / paper / kraft`；贴纸支持 `star / bow / heart / dot / leaf`；
 标题图标支持 `rounded / fine / minimal / natural`；引号支持 `handwritten / slender / minimal`。
 渲染组件只识别这些通用样式，不按主题 ID 写判断。新增主题可复用相同配置。
-缺省或未知材料不会渲染，恢复原有纯色布局。第一阶段全部素材为本地 CSS 和内联 SVG，
-不请求网络图片，不引入动画（包括 reduced motion 模式），随构建后的 CSS/JS 一起离线缓存。
+缺省或未知材料不会渲染，恢复原有纯色布局。素材为本地 CSS 和 SVG，
+不请求外部图片，不引入动画（包括 reduced motion 模式），随生产构建一起离线缓存。
 所有装饰均 `aria-hidden`、`pointer-events: none`，不遮挡操作区域；切换仍使用原有预览、保存和 localStorage 机制。
+
+### 首页贴纸素材包
+
+`public/decorations/` 包含 12 个原创透明 SVG，均无字体、外部引用或脚本：
+
+| 目录 | 主贴纸 / 辅助素材 | 胶带 |
+| --- | --- | --- |
+| cream | star.svg、pudding.svg | 浅蓝格纹 tape.svg |
+| pink | bow.svg、hearts.svg | 粉色和纸 tape.svg |
+| minimal | sun.svg、flower.svg | 米白纸 tape.svg |
+| nature | leaf.svg、mushroom.svg | 牛皮纸 tape.svg |
+
+本次仅首页接入图片素材。主题中心保留现有 CSS 胶带与预览贴纸，胶带 SVG 路径存于 `tape.asset`，不改变其布局或外观。
+`quoteDecorationStyle.sticker` 与 `quoteDecorationStyle.doodle` 接受 `{ asset: 'decorations/pink/bow.svg', size: 36 }`；
+`progressCardDecoration` 使用相同结构。`size` 限定 12–48px，路径仅允许上述本地 SVG 目录。
+旧的 `{ shape, color }` 写法仍兼容；素材加载失败时移除该图片，不显示破图。
+文学句子标题行内最多 1 主贴纸 + 1 辅助素材，保留 Library 触控区；进度卡保留 section icon，边缘仅 1 张贴纸。
+贴纸不参与布局高度计算，不修改引文、进度、饮水、导航或本地数据逻辑；构建自动将 12 个 SVG 加入 Service Worker 离线清单。

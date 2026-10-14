@@ -1,4 +1,6 @@
 import { stickerProps } from "../../config/decorations.js";
+import { useState } from "react";
+import { themeAssetUrl } from "../../config/themes.js";
 import "../../styles/decorations.css";
 
 const paths = {
@@ -10,8 +12,13 @@ const paths = {
 };
 
 export function ThemeSticker({ material, className = "" }) {
+  const [failedAsset, setFailedAsset] = useState(null);
   const safe = stickerProps(material);
   if (!safe) return null;
+  if (safe.asset) {
+    if (failedAsset === safe.asset) return null;
+    return <img className={`theme-ornament theme-sticker-asset ${className}`} src={themeAssetUrl(safe.asset)} style={{ "--sticker-size": `${safe.size}px` }} width={safe.size} height={safe.size} alt="" aria-hidden="true" draggable="false" decoding="async" onError={() => setFailedAsset(safe.asset)} />;
+  }
   return <svg className={`theme-ornament ${className}`} data-shape={safe.shape} style={{ color: safe.color }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d={paths[safe.shape]} /></svg>;
 }
 
