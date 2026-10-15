@@ -6,6 +6,12 @@
 
 ## 已实现
 
+- 首页 Hydration Cup：奶油随行杯、粉色珍珠杯、极简外带咖啡杯、自然陶瓷马克杯；四种独立内联 SVG 杯型共用原有饮水记录和按钮，不新增存储字段。
+- `src/config/themes.js` 中的 `hydrationCup` 配置包含 `type`、`bodyColor`、`bodySecondaryColor`、`rimColor`、`lidColor`、`handleColor`、`strawColor`、`accentColor`、`waterColor`、`outlineColor`、`straw`、`handle`、`pearls`、`progressWindow`、`sticker`、`secondaryDecoration`、`completion`。组件只按杯型选择 renderer，不判断主题名称。
+- 水位按实际总量 / 当日目标精确计算，裁切至 0–100%；随行杯中央窗口、咖啡杯窄窗、珍珠杯与马克杯内部切面各自显示动态水位。超过目标仍保留真实总量、百分比和超额提示；珍珠固定 9 颗，不代表饮水量。
+- 展示区固定 210px，状态提示预留高度；390×844 下四种杯型和各水位保持相同卡片高度、按钮位置。水位过渡 400ms、杯型淡入 200ms，遵循 reduced motion。保留 aria-live 数字播报，杯子有文字标签，装饰不参与读屏与点击。
+- 复用现有布丁 / 星星、蝴蝶结 / 小花 / 爱心、太阳 / 线花、蘑菇 / 叶子 SVG，无新增图片、字体、动画库或网络依赖。缺失装饰安全隐藏，杯子与数字仍正常工作；生产构建自动将相关本地素材纳入离线缓存。
+
 - Lumina Daily Literary Line：Logo 下方每日显示一条英文文学原句，点击展开中文释义与收藏；Library 可按主题筛选和取消收藏。
 - 原作核验：[Shakespeare’s Sonnets](https://www.gutenberg.org/ebooks/1041)、[Pride and Prejudice](https://www.gutenberg.org/ebooks/1342)、[A Christmas Carol](https://www.gutenberg.org/ebooks/46)。条目同时记录具体诗号、章节或分节；保留所用版本的文字和标点。
 - 30 条原句内置在 `src/data/literaryQuotes.ts`，记录作品、年份、篇章定位与核验来源。英文原文选自莎士比亚《十四行诗集》(1609)、奥斯汀《傲慢与偏见》(1813)、狄更斯《圣诞颂歌》(1843)，使用 Project Gutenberg 公版原文；中文为本项目自写释义，不复制现代译本。诗歌条目可能是逐字节选的诗行，人物对白不代表作者本人主张。

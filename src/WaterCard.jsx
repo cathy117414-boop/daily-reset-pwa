@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CheckIcon } from "./icons";
 import { Field, Modal } from "./components";
 import { waterProgress } from "./water";
+import { HydrationCup } from "./features/hydration/HydrationCup";
 
 function WaterAmountForm({ onSave, onClose }) {
   const [amount, setAmount] = useState("");
@@ -66,10 +67,9 @@ function WaterSettingsForm({ day, onSave, onClose }) {
   );
 }
 
-export function WaterCard({ day, onAdd, onUndo, onSettings }) {
+export function WaterCard({ day, onAdd, onUndo, onSettings, hydrationCup }) {
   const [modal, setModal] = useState(null);
   const progress = waterProgress(day);
-  const waterStyle = { "--water-level": `${progress.visualPercent}%` };
 
   const addCustom = (amountMl) => {
     onAdd(amountMl);
@@ -90,28 +90,23 @@ export function WaterCard({ day, onAdd, onUndo, onSettings }) {
         <button className="water-settings-button" onClick={() => setModal("settings")}>饮水设置</button>
       </div>
 
-      <div className="water-content">
-        <div className="water-cup-wrap" aria-hidden="true">
-          <div className="water-cup">
-            <div className="water-fill" style={waterStyle}>
-              <span className="water-wave" />
-            </div>
-          </div>
+      <div className="water-content water-content--themed">
+        <p className="water-total" aria-live="polite" aria-atomic="true">
+          <strong>{progress.totalMl}</strong>
+          <span> / {progress.goalMl} ml</span>
           <span className="water-percent">{progress.percent}%</span>
-        </div>
-
+        </p>
+        <HydrationCup progress={progress} config={hydrationCup} />
         <div className="water-details">
-          <p className="water-total" aria-live="polite" aria-atomic="true">
-            <strong>{progress.totalMl}</strong>
-            <span> / {progress.goalMl} ml</span>
-          </p>
           <p className="water-cups">已喝 {progress.wholeCups} 杯，合计 {progress.totalMl}ml</p>
-          {progress.completed ? (
-            <div className="water-success"><CheckIcon size={18} /><span>今日喝水目标完成啦！</span></div>
-          ) : (
-            <p className="water-remaining">还差 <strong>{progress.remainingMl}ml</strong></p>
-          )}
-          {progress.excessMl > 0 ? <p className="water-excess">已超出目标 {progress.excessMl}ml，仍可继续记录</p> : null}
+          <div className="water-goal-status">
+            {progress.completed ? (
+              <div className="water-success"><CheckIcon size={18} /><span>今日喝水目标完成啦！</span></div>
+            ) : (
+              <p className="water-remaining">还差 <strong>{progress.remainingMl}ml</strong></p>
+            )}
+            {progress.excessMl > 0 ? <p className="water-excess">已超出目标 {progress.excessMl}ml，仍可继续记录</p> : null}
+          </div>
         </div>
       </div>
 

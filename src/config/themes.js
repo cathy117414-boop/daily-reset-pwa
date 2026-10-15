@@ -26,6 +26,15 @@ export const THEMES = Object.freeze([
     mascotImage: "themes/cream-puppy/mascot.webp",
     completedImage: "themes/cream-puppy/completed.webp",
     thumbnailImage: "themes/cream-puppy/thumbnail.webp",
+    hydrationCup: {
+      type: "tumbler", bodyColor: "#F4E1A3", bodySecondaryColor: "#FFF3CF",
+      rimColor: "#BBA27B", lidColor: "#DFC68E", handleColor: "#E9D29B",
+      strawColor: "#C6A26F", accentColor: "#B78345", waterColor: "#A7CBD7", outlineColor: "#A38B6A",
+      straw: true, handle: true, pearls: false, progressWindow: "central",
+      sticker: { asset: "decorations/cream/pudding.svg" },
+      secondaryDecoration: { asset: "decorations/cream/doodle-star.svg" },
+      completion: { type: "stars", asset: "decorations/cream/doodle-star.svg" },
+    },
     decorations: {
       tape: { style: "gingham", color: "#D8E9EF", ink: "#94B7C7", asset: "decorations/cream/tape.svg" },
       texture: { primaryType: "gingham", secondaryType: "paper-fiber", opacity: .06, secondaryOpacity: .035, scale: 1, color: "#8CAEBB" },
@@ -70,6 +79,15 @@ export const THEMES = Object.freeze([
     mascotImage: "themes/pink-kitten/mascot.webp",
     completedImage: "themes/pink-kitten/completed.webp",
     thumbnailImage: "themes/pink-kitten/thumbnail.webp",
+    hydrationCup: {
+      type: "boba", bodyColor: "#FBE8EF", bodySecondaryColor: "#FFF8FA",
+      rimColor: "#C79CAB", lidColor: "#F0C9D7", handleColor: "#F0C9D7",
+      strawColor: "#DFA9BD", accentColor: "#BA7891", waterColor: "#B2D2DF", outlineColor: "#C396A8",
+      straw: true, handle: false, pearls: { count: 9, color: "#8C727B" }, progressWindow: "body",
+      sticker: { asset: "decorations/pink/bow.svg" },
+      secondaryDecoration: { asset: "decorations/pink/doodle-flower.svg" },
+      completion: { type: "hearts", asset: "decorations/pink/hearts.svg" },
+    },
     decorations: {
       tape: { style: "washi", color: "#F4CDD9", ink: "#D99AB0", asset: "decorations/pink/tape.svg" },
       texture: { primaryType: "pin-dots", secondaryType: "washi-fiber", opacity: .1, secondaryOpacity: .04, scale: 1, color: "#BD90A1" },
@@ -114,6 +132,15 @@ export const THEMES = Object.freeze([
     mascotImage: "themes/minimal-rabbit/mascot.webp",
     completedImage: "themes/minimal-rabbit/completed.webp",
     thumbnailImage: "themes/minimal-rabbit/thumbnail.webp",
+    hydrationCup: {
+      type: "coffee", bodyColor: "#F9F5EA", bodySecondaryColor: "#EDF1EF",
+      rimColor: "#A7ADA5", lidColor: "#CCD8DC", handleColor: "#CCD8DC",
+      strawColor: "#CCD8DC", accentColor: "#DF9960", waterColor: "#A8C7D2", outlineColor: "#8C9C9D",
+      straw: false, handle: false, pearls: false, progressWindow: "vertical",
+      sticker: { asset: "decorations/minimal/sun.svg" },
+      secondaryDecoration: { asset: "decorations/minimal/doodle-flower.svg" },
+      completion: { type: "check" },
+    },
     decorations: {
       tape: { style: "paper", color: "#EDE8DA", ink: "#C9C1AC", asset: "decorations/minimal/tape.svg" },
       texture: { primaryType: "horizontal-grain", secondaryType: "fine-grid", opacity: .035, secondaryOpacity: .035, scale: 1, color: "#A6A59C" },
@@ -158,6 +185,15 @@ export const THEMES = Object.freeze([
     mascotImage: "themes/bear-bug/mascot.webp",
     completedImage: "themes/bear-bug/completed.webp",
     thumbnailImage: "themes/bear-bug/thumbnail.webp",
+    hydrationCup: {
+      type: "mug", bodyColor: "#DDE5D4", bodySecondaryColor: "#F2EEE0",
+      rimColor: "#A69A7C", lidColor: "#DED4BC", handleColor: "#C9D6C0",
+      strawColor: "#BDA77D", accentColor: "#7C9275", waterColor: "#B0C7CC", outlineColor: "#85917B",
+      straw: false, handle: true, pearls: false, progressWindow: "body",
+      sticker: { asset: "decorations/nature/mushroom.svg" },
+      secondaryDecoration: { asset: "decorations/nature/doodle-leaf.svg" },
+      completion: { type: "leaf", asset: "decorations/nature/doodle-leaf.svg" },
+    },
     decorations: {
       tape: { style: "kraft", color: "#D7BC92", ink: "#AF8E62", asset: "decorations/nature/tape.svg" },
       texture: { primaryType: "speckles", secondaryType: "botanical-fiber", opacity: .13, secondaryOpacity: .07, scale: 1, color: "#92937A" },

@@ -54,7 +54,7 @@ function TaskForm({ initial = emptyTask, onSave, onClose }) {
   );
 }
 
-function DayPage({ title, date, state, setState, isToday, onLibrary, onFavorite, decorations }) {
+function DayPage({ title, date, state, setState, isToday, onLibrary, onFavorite, decorations, hydrationCup }) {
   const dateKey = getDateKey(date);
   const tasks = state.days[dateKey]?.tasks || [];
   const waterDay = state.waterDays?.[dateKey];
@@ -100,6 +100,7 @@ function DayPage({ title, date, state, setState, isToday, onLibrary, onFavorite,
       {isToday && waterDay ? (
         <WaterCard
           day={waterDay}
+          hydrationCup={hydrationCup}
           onAdd={(amountMl) => setState((current) => addWater(current, dateKey, amountMl))}
           onUndo={() => setState((current) => undoLastWater(current, dateKey))}
           onSettings={(settings) => setState((current) => updateWaterSettings(current, dateKey, settings))}
@@ -311,7 +312,7 @@ export default function App() {
   }, [currentDateKey]);
 
   let page;
-  if (active === "today") page = <DayPage title="今日" date={new Date(`${currentDateKey}T12:00:00`)} state={state} setState={setState} isToday onLibrary={() => setActive('library')} onFavorite={favorite} decorations={theme.activeTheme.decorations} />;
+  if (active === "today") page = <DayPage title="今日" date={new Date(`${currentDateKey}T12:00:00`)} state={state} setState={setState} isToday onLibrary={() => setActive('library')} onFavorite={favorite} decorations={theme.activeTheme.decorations} hydrationCup={theme.activeTheme.hydrationCup} />;
   if (active === "tomorrow") page = <DayPage title="明日计划" date={addDays(new Date(), 1)} state={state} setState={setState} />;
   if (active === "habits") page = <HabitsPage state={state} setState={setState} />;
   if (active === "workouts") page = <WorkoutsPage state={state} setState={setState} />;
