@@ -30,7 +30,7 @@ export const THEMES = Object.freeze([
       type: "tumbler", bodyColor: "#F4E1A3", bodySecondaryColor: "#FFF3CF",
       rimColor: "#BBA27B", lidColor: "#DFC68E", handleColor: "#E9D29B",
       strawColor: "#C6A26F", accentColor: "#B78345", waterColor: "#A7CBD7", outlineColor: "#A38B6A",
-      straw: true, handle: true, pearls: false, progressWindow: "central",
+      straw: true, handle: true, pearls: false, progressWindow: "vertical",
       sticker: { asset: "decorations/cream/pudding.svg" },
       secondaryDecoration: { asset: "decorations/cream/doodle-star.svg" },
       completion: { type: "stars", asset: "decorations/cream/doodle-star.svg" },
@@ -82,7 +82,7 @@ export const THEMES = Object.freeze([
     hydrationCup: {
       type: "boba", bodyColor: "#FBE8EF", bodySecondaryColor: "#FFF8FA",
       rimColor: "#C79CAB", lidColor: "#F0C9D7", handleColor: "#F0C9D7",
-      strawColor: "#DFA9BD", accentColor: "#BA7891", waterColor: "#B2D2DF", outlineColor: "#C396A8",
+      strawColor: "#DFA9BD", accentColor: "#BA7891", waterColor: "#EAD0CD", outlineColor: "#C396A8",
       straw: true, handle: false, pearls: { count: 9, color: "#8C727B" }, progressWindow: "body",
       sticker: { asset: "decorations/pink/bow.svg" },
       secondaryDecoration: { asset: "decorations/pink/doodle-flower.svg" },

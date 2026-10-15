@@ -30,64 +30,69 @@ function Fluid({ id, geometry, percent }) {
 }
 
 export function StanleyCup({ config, fluid }) {
-  return <g className="cup-body-art" data-cup-renderer="tumbler" transform="translate(-10 0)">
-    <path data-part="handle" d="M160 82H181Q202 82 202 104V151Q202 169 181 169H164" stroke="var(--cup-outline)" strokeWidth="17" fill="none" />
-    <path d="M160 82H181Q202 82 202 104V151Q202 169 181 169H164" stroke="var(--cup-handle)" strokeWidth="13" fill="none" />
-    {config.straw ? <path data-part="straw" d="m135 66 5-49q0-4 4-4" stroke="var(--cup-straw)" strokeWidth="7" strokeLinecap="round" fill="none" /> : null}
-    <path d="M59 65H157L165 185Q166 204 146 204H69Q49 204 49 186Z" fill="var(--cup-body)" stroke="var(--cup-outline)" strokeWidth="1.8" />
-    <path d="m59 76-4 103q-1 12 9 15" stroke="var(--cup-secondary)" strokeWidth="5" strokeLinecap="round" fill="none" />
+  return <g className="cup-body-art" data-cup-renderer="tumbler" transform="translate(-18 0)">
+    <path data-part="handle" d="M164 72H190Q220 72 220 96V162Q220 185 196 185H157" stroke="var(--cup-outline)" strokeWidth="17" strokeLinejoin="round" fill="none" />
+    <path d="M164 72H190Q220 72 220 96V162Q220 185 196 185H157" stroke="var(--cup-handle)" strokeWidth="13" fill="none" />
+    {config.straw ? <path data-part="straw" d="m136 57 7-46q1-6 5-6" stroke="var(--cup-straw)" strokeWidth="5.5" strokeLinecap="round" fill="none" /> : null}
+    <path d="M52 58H166L153 201Q151 225 135 226H83Q66 225 64 203Z" fill="var(--cup-body)" stroke="var(--cup-outline)" strokeWidth="1.6" />
+    <path d="m59 74 11 126q1 13 9 16" stroke="var(--cup-secondary)" strokeWidth="4" strokeLinecap="round" fill="none" />
     <path d={CUP_GEOMETRY.tumbler.path} fill="var(--cup-secondary)" />
     {fluid}
-    <path data-part="progress-window" d={CUP_GEOMETRY.tumbler.path} stroke="var(--cup-rim)" strokeWidth="1.3" fill="none" />
-    <rect data-part="lid" x="51" y="58" width="113" height="16" rx="6" fill="var(--cup-lid)" stroke="var(--cup-outline)" strokeWidth="1.5" />
-    <ellipse cx="108" cy="58" rx="55" ry="5" fill="var(--cup-secondary)" stroke="var(--cup-rim)" strokeWidth="1.2" />
-    <CupArt material={config.sticker} x={55} y={163} size={32} />
-    <CupArt material={config.secondaryDecoration} x={142} y={76} size={22} doodle />
+    <path data-part="progress-window" d={CUP_GEOMETRY.tumbler.path} stroke="var(--cup-rim)" strokeOpacity=".6" strokeWidth="1" fill="none" />
+    <rect data-part="lid" x="44" y="54" width="130" height="11" rx="5" fill="var(--cup-lid)" stroke="var(--cup-outline)" strokeWidth="1.4" />
+    <ellipse cx="109" cy="54" rx="64" ry="3.5" fill="var(--cup-secondary)" stroke="var(--cup-rim)" strokeWidth="1" />
+    <CupArt material={config.sticker} x={68} y={163} size={40} />
+    <g transform="rotate(-12 151 96)"><CupArt material={config.secondaryDecoration} x={140} y={83} size={20} doodle /></g>
+    <CupArt material={config.secondaryDecoration} x={151} y={109} size={11} doodle />
   </g>;
 }
 
-const pearlPositions = [[83,184,4.8],[96,189,5.1],[110,183,4.7],[124,191,5],[140,185,5.2],[150,191,4.4],[91,175,4.4],[122,175,4.8],[140,174,4.2]];
+const pearlPositions = [[88,201,4.6],[100,207,5.2],[114,199,4.7],[127,208,5],[143,203,5.1],[148,193,4],[94,190,4.3],[121,189,4.9],[135,191,4.2]];
 export function BobaCup({ config, fluid }) {
   return <g className="cup-body-art" data-cup-renderer="boba" transform="translate(5 0)">
-    {config.straw ? <g data-part="straw"><path d="m131 113 8-96" stroke="var(--cup-straw)" strokeWidth="12" strokeLinecap="round" /><path d="m136 30 1-9" stroke="var(--cup-secondary)" strokeWidth="4" strokeLinecap="round" /></g> : null}
-    <path d="M56 65H174L161 190Q160 201 149 201H82Q72 201 70 190Z" fill="var(--cup-body)" fillOpacity=".7" stroke="var(--cup-outline)" strokeWidth="1.7" />
+    {config.straw ? <g data-part="straw"><path d="m130 118 9-107" stroke="var(--cup-straw)" strokeWidth="14" strokeLinecap="round" /><path d="m137 25 1-10" stroke="var(--cup-secondary)" strokeWidth="4" strokeLinecap="round" /></g> : null}
+    <path d="M58 59H172L159 203Q158 218 146 219H86Q74 218 73 204Z" fill="var(--cup-body)" fillOpacity=".62" stroke="var(--cup-outline)" strokeWidth="1.6" />
     {fluid}
     {config.pearls ? <g data-part="pearls" fill={config.pearls.color}><clipPath id={`${config.clipId}-pearls`}><path d={CUP_GEOMETRY.boba.path} /></clipPath><g clipPath={`url(#${config.clipId}-pearls)`}>{pearlPositions.map(([cx,cy,r],i)=><circle key={i} data-pearl="true" cx={cx} cy={cy} r={r} />)}</g></g> : null}
-    <path d="m64 80 10 94" stroke="var(--cup-secondary)" strokeWidth="3" strokeLinecap="round" opacity=".8" />
-    <rect data-part="lid" x="52" y="60" width="126" height="10" rx="4" fill="var(--cup-lid)" stroke="var(--cup-rim)" strokeWidth="1.3" />
-    <path d="M59 63h108" stroke="var(--cup-secondary)" strokeWidth="2" strokeLinecap="round" />
-    <CupArt material={config.sticker} x={107} y={102} size={29} />
-    <CupArt material={config.secondaryDecoration} x={147} y={144} size={21} doodle />
+    <path d="m66 76 11 109" stroke="var(--cup-secondary)" strokeWidth="3" strokeLinecap="round" opacity=".8" />
+    <rect data-part="lid" x="53" y="56" width="124" height="9" rx="4" fill="var(--cup-lid)" stroke="var(--cup-rim)" strokeWidth="1.2" />
+    <path d="M60 59h108" stroke="var(--cup-secondary)" strokeWidth="2" strokeLinecap="round" />
+    <CupArt material={config.sticker} x={100} y={95} size={35} />
+    <CupArt material={config.secondaryDecoration} x={142} y={149} size={19} doodle />
   </g>;
 }
 
 export function CoffeeCup({ config, fluid }) {
-  return <g className="cup-body-art" data-cup-renderer="coffee" transform="translate(3 -7)">
-    <path d="M68 66H168L153 198Q151 205 143 205H92Q84 205 83 198Z" fill="var(--cup-body)" stroke="var(--cup-outline)" strokeWidth="1.6" />
-    <path data-part="sleeve" d="m73 113 90 1-5 44-80-1Z" fill="var(--cup-accent)" fillOpacity=".55" stroke="var(--cup-rim)" strokeWidth=".7" />
-    <path d="m101 122 36 1m-38 5 23 1m-23 19 42 1" stroke="var(--cup-secondary)" strokeWidth=".7" opacity=".5" />
+  return <g className="cup-body-art" data-cup-renderer="coffee" transform="translate(3 0)">
+    <defs><pattern id={`${config.clipId}-paper`} width="13" height="11" patternUnits="userSpaceOnUse"><path d="m2 3 2 .2m5 4 1-.2M6 10h2" stroke="var(--cup-outline)" strokeWidth=".65" opacity=".14" /></pattern></defs>
+    <path d="M62 67H174L153 192Q151 200 143 200H94Q85 200 83 191Z" fill="var(--cup-body)" stroke="var(--cup-outline)" strokeWidth="1.5" />
+    <path data-part="sleeve" d="m70 112 96 1-7 43-81-1Z" fill="var(--cup-accent)" fillOpacity=".5" stroke="var(--cup-rim)" strokeWidth=".6" />
+    <path d="m70 112 96 1-7 43-81-1Z" fill={`url(#${config.clipId}-paper)`} />
     <path d={CUP_GEOMETRY.coffee.path} fill="var(--cup-secondary)" />
     {fluid}
-    <path data-part="progress-window" d={CUP_GEOMETRY.coffee.path} fill="none" stroke="var(--cup-rim)" strokeWidth="1" />
-    <path data-part="lid" d="m65 52 6-9h91l6 9 6 5v10H60V57Z" fill="var(--cup-lid)" stroke="var(--cup-outline)" strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M73 48q43-4 83 0M65 59h103" stroke="var(--cup-secondary)" strokeWidth="2" strokeLinecap="round" />
-    <CupArt material={config.sticker} x={113} y={123} size={25} />
-    <CupArt material={config.secondaryDecoration} x={140} y={78} size={20} doodle />
+    <path data-part="progress-window" d={CUP_GEOMETRY.coffee.path} fill="none" stroke="var(--cup-rim)" strokeOpacity=".55" strokeWidth=".8" />
+    <path data-part="lid" d="M60 58q1-5 7-8l4-6q1-3 7-3h80q7 0 9 4l4 6q6 2 6 7v7q0 4-5 4H63q-6 0-6-4Z" fill="var(--cup-lid)" stroke="var(--cup-outline)" strokeWidth="1.4" strokeLinejoin="round" />
+    <path d="M76 46q40-3 80 0M63 61q56 2 109 0" stroke="var(--cup-secondary)" strokeWidth="1.7" strokeLinecap="round" fill="none" />
+    <CupArt material={config.sticker} x={123} y={119} size={21} />
+    <g opacity=".75"><CupArt material={config.secondaryDecoration} x={134} y={137} size={16} doodle /></g>
   </g>;
 }
 
 export function CeramicMug({ config, fluid }) {
-  return <g className="cup-body-art" data-cup-renderer="mug" transform="translate(-10 -18)">
-    <path data-part="handle" d="M170 103C219 85 224 174 169 172" fill="none" stroke="var(--cup-outline)" strokeWidth="20" />
-    <path d="M170 103C219 85 224 174 169 172" fill="none" stroke="var(--cup-handle)" strokeWidth="16" />
-    <path d="M47 85Q109 80 174 86l-3 85q0 27-25 28H77q-25 0-27-26Z" fill="var(--cup-body)" stroke="var(--cup-outline)" strokeWidth="1.7" />
+  return <g className="cup-body-art" data-cup-renderer="mug" transform="translate(-10 0)">
+    <defs><pattern id={`${config.clipId}-glaze`} width="19" height="17" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r=".6" fill="var(--cup-rim)" opacity=".12" /><path d="m12 12 2-.4" stroke="var(--cup-secondary)" strokeWidth="1.3" opacity=".25" strokeLinecap="round" /></pattern></defs>
+    <path data-part="handle" d="M174 110C214 91 225 130 210 159Q199 179 173 170" fill="none" stroke="var(--cup-outline)" strokeWidth="20" strokeLinecap="round" />
+    <path d="M174 110C214 91 225 130 210 159Q199 179 173 170" fill="none" stroke="var(--cup-handle)" strokeWidth="16" strokeLinecap="round" />
+    <path d="M43 92Q108 86 178 94l-4 72q-1 28-27 29H74q-25-1-27-24Z" fill="var(--cup-body)" stroke="var(--cup-outline)" strokeWidth="1.6" />
     {fluid}
-    <path d="m58 108 2 56q0 17 9 20" stroke="var(--cup-secondary)" strokeWidth="3.5" opacity=".7" strokeLinecap="round" fill="none" />
-    <ellipse data-part="rim" cx="110" cy="86" rx="63" ry="10" fill="var(--cup-rim)" stroke="var(--cup-outline)" strokeWidth="1.5" />
-    <ellipse cx="110" cy="85" rx="55" ry="5" fill="var(--cup-secondary)" />
-    <path d="m73 191 5 1m25 1h3m24-2 5-1" stroke="var(--cup-rim)" strokeWidth="1.4" opacity=".5" strokeLinecap="round" />
-    <CupArt material={config.sticker} x={136} y={160} size={30} />
-    <CupArt material={config.secondaryDecoration} x={48} y={95} size={24} doodle />
+    <path d="M43 92Q108 86 178 94l-4 72q-1 28-27 29H74q-25-1-27-24Z" fill={`url(#${config.clipId}-glaze)`} />
+    <path d="m56 115 2 50q0 16 9 19" stroke="var(--cup-secondary)" strokeWidth="3.5" opacity=".7" strokeLinecap="round" fill="none" />
+    <ellipse data-part="rim" cx="110" cy="93" rx="67" ry="12" fill="var(--cup-rim)" stroke="var(--cup-outline)" strokeWidth="1.4" />
+    <ellipse cx="110" cy="92" rx="58" ry="7" fill="var(--cup-secondary)" />
+    <ellipse cx="110" cy="95" rx="52" ry="3.5" fill="var(--cup-water)" opacity={config.visualPercent > 0 ? .24 : 0} />
+    <path d="m72 187 5 1m25 1h3m25-2 5-1" stroke="var(--cup-rim)" strokeWidth="1.2" opacity=".5" strokeLinecap="round" />
+    <CupArt material={config.sticker} x={140} y={157} size={30} />
+    <CupArt material={config.secondaryDecoration} x={49} y={106} size={26} doodle />
   </g>;
 }
 
@@ -109,8 +114,8 @@ export function HydrationCup({ progress, config = {} }) {
   ]));
   return <div className="hydration-cup" role="img" aria-label={`今日饮水 ${progress.totalMl} / ${progress.goalMl} 毫升，${progress.percent}%`} style={style} data-cup-type={type}>
     <div className="hydration-cup-scene" key={type}>
-      <svg className="hydration-cup-svg" viewBox="0 0 240 220" width="240" height="220" aria-hidden="true" focusable="false">
-        <Renderer config={{ ...config, clipId: id }} fluid={<Fluid id={id} geometry={CUP_GEOMETRY[type]} percent={cupVisualPercent(progress.totalMl, progress.goalMl)} />} />
+      <svg className="hydration-cup-svg" viewBox={CUP_GEOMETRY[type].viewBox} width="240" height="220" aria-hidden="true" focusable="false">
+        <Renderer config={{ ...config, clipId: id, visualPercent: cupVisualPercent(progress.totalMl, progress.goalMl) }} fluid={<Fluid id={id} geometry={CUP_GEOMETRY[type]} percent={cupVisualPercent(progress.totalMl, progress.goalMl)} />} />
         {progress.completed ? <CompletionFeedback material={config.completion} /> : null}
       </svg>
     </div>
