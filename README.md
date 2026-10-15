@@ -10,7 +10,8 @@
 - `src/config/themes.js` 中的 `hydrationCup` 配置包含 `type`、`bodyColor`、`bodySecondaryColor`、`rimColor`、`lidColor`、`handleColor`、`strawColor`、`accentColor`、`waterColor`、`outlineColor`、`straw`、`handle`、`pearls`、`progressWindow`、`sticker`、`secondaryDecoration`、`completion`。组件只按杯型选择 renderer，不判断主题名称。
 - 水位按实际总量 / 当日目标精确计算，裁切至 0–100%；随行杯细长圆角窗口、咖啡杯中部偏左窄窗、珍珠杯与马克杯内部切面各自显示动态水位。超过目标仍保留真实总量、百分比和超额提示；珍珠固定 9 颗，不代表饮水量。
 - v1 视觉精修：修长奶油随行杯与宽 C 型把手、淡奶粉色珍珠杯、圆润盖沿与纸纹咖啡杯、低对比釉面陶瓷杯。各自设置 SVG viewBox 平衡视觉重量，不改数据或动画逻辑。
-- 展示区固定 204px，状态提示预留高度；390×844 下卡片由 621px 缩短至 579px，四种杯型和各水位保持相同卡片高度、按钮位置。水位过渡 400ms、杯型淡入 200ms，遵循 reduced motion。保留 aria-live 数字播报，杯子有文字标签，装饰不参与读屏与点击。
+- 最后一轮精修：随行杯纵向拉长 6%，奶茶杯收窄 4%，咖啡杯窄窗改为 9px 且更淡，陶瓷杯口与把手更圆润；四杯型共享轻描边、白边与阴影，无新增贴纸或 doodle。
+- 展示区固定 216px（比前版增加约 6%，给杯子更多显示空间），通过压缩卡片内边距与文字留白，390×844 下卡片从前版 579px 再缩短至 547px；四种杯型和各水位保持相同卡片高度、按钮位置。水位过渡 400ms、杯型淡入 200ms，遵循 reduced motion。保留 aria-live 数字播报，杯子有文字标签，装饰不参与读屏与点击。
 - 复用现有布丁 / 星星、蝴蝶结 / 小花 / 爱心、太阳 / 线花、蘑菇 / 叶子 SVG，无新增图片、字体、动画库或网络依赖。缺失装饰安全隐藏，杯子与数字仍正常工作；生产构建自动将相关本地素材纳入离线缓存。
 
 - Lumina Daily Literary Line：Logo 下方每日显示一条英文文学原句，点击展开中文释义与收藏；Library 可按主题筛选和取消收藏。
