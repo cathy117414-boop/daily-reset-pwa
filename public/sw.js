@@ -6,7 +6,7 @@ const scoped = (path = "") => new URL(path, SCOPE_URL).toString();
 const CACHE_PREFIX = `lumina-${encodeURIComponent(new URL(SCOPE_URL).pathname)}-`;
 const CACHE_NAME = `${CACHE_PREFIX}${BUILD_ID}`;
 const HTML_URL = scoped();
-const CORE_ASSETS = [...new Set(["", "manifest.json", "app-icon.svg", "app-icon-192.png", "app-icon-512.png", ...BUILD_ASSETS])];
+const CORE_ASSETS = [...new Set(["", "manifest.json", "icons/lumina-flower-v1-180.png", "icons/lumina-flower-v1-192.png", "icons/lumina-flower-v1-512.png", "icons/lumina-flower-v1-maskable-192.png", "icons/lumina-flower-v1-maskable-512.png", "icons/lumina-flower-v1.ico", ...BUILD_ASSETS])];
 
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {

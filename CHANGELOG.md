@@ -1,5 +1,11 @@
 # 更新记录
 
+## 2026-10-16 · Lumina 最终星花图标
+
+- 以用户提供的 1254px 方形 PNG 为 master，生成 15 个常用尺寸、180px iOS 图标、16/32/48 ICO 与独立 192/512 maskable 文件；不加白边或圆角。
+- 更新静态 HTML、Sites metadata 和 manifest，使用版本化图标路径；替换旧 PNG 兼容入口并移除绿色 SVG。
+- 更新 Service Worker 核心离线清单，构建内容哈希自动更新缓存；用户数据、应用身份、主题与业务界面不变。
+
 ## 2026-10-16 · Tonight’s Care 紧凑首页
 
 - 压缩 Routine / Due Today / Extra Care Today 空状态与分区间距，保留 44px 添加按钮触控区域。

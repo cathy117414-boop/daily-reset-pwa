@@ -103,6 +103,15 @@ public/themes/
 
 ## 添加到手机主屏幕
 
+### Lumina 最终图标
+
+- 用户提供的 1254×1254 原始 PNG 保存在 `assets/branding/lumina-master.png`。运行 `node scripts/generate-icons.mjs` 可重复生成图标，两种生产构建均会调用它。
+- `public/icons/lumina-flower-v1-{size}.png` 提供 16、32、48、64、96、120、128、144、152、167、180、192、256、384、512px；另提供包含 16/32/48 帧的 ICO、独立 192/512 maskable 文件。
+- 不加白边、不预裁圆角、不裁切或拉伸；源图的四瓣、星星位于中央 80% 直径安全圆内，any / maskable 均保留原有留白，背景不透明。iOS 自行处理圆角。
+- HTML 与 Sites metadata 使用版本化路径，apple-touch-icon 明确为 180×180；manifest 将 any 与 maskable 分开声明。根目录 `favicon.ico`、favicon PNG、`apple-touch-icon.png`、`app-icon-192/512.png`、`icon-192/512.png` 兼容入口也全部为新图，不再保留绿色 SVG。
+- 图标全部纳入构建内容哈希及离线缓存。图标改变会自动换缓存版本；沿用 skipWaiting / clients.claim / 仅清理本应用旧 Cache Storage 的机制，绝不清空 localStorage。
+- iPhone 已安装图标可能仍由系统缓存管理，网页不能强制刷新主屏幕图标。先联网打开原 Lumina、退出再重新打开，等待更新；再用 Safari 打开同一网址并刷新，通过“分享 → 添加到主屏幕”预览新图标。旧主屏幕入口先保留，不要清除 Safari 网站数据或卸载 PWA；不能保证重新添加入口会继承独立 PWA 存储。
+
 PWA 安装和 Service Worker 需要 HTTPS，`localhost` 除外。
 
 1. 把 `dist/` 部署到支持 HTTPS 的静态网站服务。
@@ -126,7 +135,9 @@ PWA 安装和 Service Worker 需要 HTTPS，`localhost` 除外。
 ```text
 daily-reset-pwa/
 ├─ public/
-│  ├─ app-icon.svg
+│  ├─ icons/             # 版本化金色星花图标
+│  ├─ apple-touch-icon.png
+│  ├─ favicon.ico
 │  ├─ manifest.json
 │  └─ sw.js
 ├─ src/
