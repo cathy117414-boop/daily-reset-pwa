@@ -6,6 +6,10 @@
 
 ## 已实现
 
+- 手机任务卡标题允许完整换行，保留原字号，描述始终跟在标题下方；卡片自然增高，编辑与删除操作固定显示。
+- 所有共用弹窗通过 `useModalViewport` 监听 Visual Viewport 的 resize / scroll，适配虚拟键盘造成的高度缩小与视口平移；字段聚焦后即时及 120/320ms 再检查，仅在必要时滚动弹窗内容，避开底部确认按钮。保留安全区、触控滚动和 16px 输入字号；无 Visual Viewport 时使用 window resize 回退。关闭弹窗时清理监听和定时器、释放背景滚动锁并恢复页面位置。
+- 手机输入回归使用 390×844 浏览器及模拟 Visual Viewport 验证，不等同于实体 iPhone Safari 键盘测试。
+
 - 首页 Hydration Cup：奶油随行杯、粉色珍珠杯、极简外带咖啡杯、自然陶瓷马克杯；四种独立内联 SVG 杯型共用原有饮水记录和按钮，不新增存储字段。
 - `src/config/themes.js` 中的 `hydrationCup` 配置包含 `type`、`bodyColor`、`bodySecondaryColor`、`rimColor`、`lidColor`、`handleColor`、`strawColor`、`accentColor`、`waterColor`、`outlineColor`、`straw`、`handle`、`pearls`、`progressWindow`、`sticker`、`secondaryDecoration`、`completion`。组件只按杯型选择 renderer，不判断主题名称。
 - 水位按实际总量 / 当日目标精确计算，裁切至 0–100%；随行杯细长圆角窗口、咖啡杯中部偏左窄窗、珍珠杯与马克杯内部切面各自显示动态水位。超过目标仍保留真实总量、百分比和超额提示；珍珠固定 9 颗，不代表饮水量。

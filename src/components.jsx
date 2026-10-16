@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useModalViewport } from "./hooks/useModalViewport";
 import { decorationProps } from "./config/decorations.js";
 import { ThemeSticker, ThemeSectionIcon } from "./features/theme-settings/ThemeDecoration";
 import {
@@ -87,9 +88,8 @@ export function TaskList({ tasks, onToggle, onEdit, onDelete, emptyText = "这�
             <div className="task-title-line">
               <span className={`module module-${task.module}`}>{task.module}</span>
               <span className="divider" />
-              <h3>{task.name}</h3>
+              <div className="task-copy"><h3>{task.name}</h3><p>{task.note}</p></div>
             </div>
-            <p>{task.note}</p>
           </div>
           <div className="row-actions">
             <button onClick={() => onEdit(task)} aria-label={`编辑 ${task.name}`}><EditIcon size={19} /></button>
@@ -106,6 +106,7 @@ export function AddButton({ children = "添加安排", onClick }) {
 }
 
 export function Modal({ title, children, onClose }) {
+  const { backdropRef, contentRef } = useModalViewport();
   useEffect(() => {
     const handleKey = (event) => event.key === "Escape" && onClose();
     window.addEventListener("keydown", handleKey);
@@ -113,10 +114,10 @@ export function Modal({ title, children, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="modal-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    <div ref={backdropRef} className="modal-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
       <section className="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <header><h2 id="modal-title">{title}</h2><button onClick={onClose} aria-label="关闭"><CloseIcon /></button></header>
-        {children}
+        <div ref={contentRef} className="modal-content">{children}</div>
       </section>
     </div>
   );
