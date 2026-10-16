@@ -33,6 +33,7 @@ export const ChartIcon = (props) => (
 export const PaletteIcon = (props) => (
   <Icon {...props}><path d="M12 3a9 9 0 1 0 0 18h1.2a2 2 0 0 0 1.6-3.2 2 2 0 0 1 1.6-3.2H18A3 3 0 0 0 21 12a9 9 0 0 0-9-9Z" /><path d="M7.5 10h.01M10 6.5h.01M14.5 6.8h.01" /></Icon>
 );
+export const CareIcon = (props) => <Icon {...props}><path d="M9 3h6v4H9ZM8 7h8l2 4v8a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-8Z" /><path d="M10 14h4M12 12v4" /></Icon>;
 export const PlusIcon = (props) => <Icon {...props}><path d="M12 5v14M5 12h14" /></Icon>;
 export const EditIcon = (props) => <Icon {...props}><path d="m4 20 4.3-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20ZM14 7l3 3" /></Icon>;
 export const TrashIcon = (props) => <Icon {...props}><path d="M4 7h16M9 7V4h6v3M7 7l1 14h8l1-14M10 11v6M14 11v6" /></Icon>;

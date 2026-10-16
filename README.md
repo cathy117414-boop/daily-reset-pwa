@@ -6,6 +6,8 @@
 
 ## 已实现
 
+- Skin Care v1：Tonight’s Care 包含 Routine、Due Today 和 Extra Care Today；管理固定护理 / 周期护理，自动计算日期，支持 Tomorrow 与两种 Extra 模式，无库存、统计、连续打卡或系统通知。首次为空，由用户建立项目；不与原任务重复打卡。详见 [Skin Care 数据与规则](docs/SKIN_CARE.md)。
+
 - 手机任务卡标题允许完整换行，保留原字号，描述始终跟在标题下方；卡片自然增高，编辑与删除操作固定显示。
 - 所有共用弹窗通过 `useModalViewport` 监听 Visual Viewport 的 resize / scroll，适配虚拟键盘造成的高度缩小与视口平移；字段聚焦后即时及 120/320ms 再检查，仅在必要时滚动弹窗内容，避开底部确认按钮。保留安全区、触控滚动和 16px 输入字号；无 Visual Viewport 时使用 window resize 回退。关闭弹窗时清理监听和定时器、释放背景滚动锁并恢复页面位置。
 - 手机输入回归使用 390×844 浏览器及模拟 Visual Viewport 验证，不等同于实体 iPhone Safari 键盘测试。

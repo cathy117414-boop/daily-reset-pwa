@@ -15,6 +15,7 @@ import { ThemeCenter } from "./features/theme-settings/ThemeCenter";
 import { useTheme } from "./hooks/useTheme";
 import { DailyLiteraryLine, LuminaLibrary } from "./features/literary/DailyLiteraryLine";
 import { toggleLiteraryFavorite } from "./literary.ts";
+import { SkinCarePage } from "./features/skin-care/SkinCarePage";
 
 const WEEKDAYS = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 const MODULES = ["生活", "成长", "健身", "语言", "饮水", "护理", "睡眠", "工作", "其他"];
@@ -297,9 +298,11 @@ export default function App() {
     const syncDate = () => setCurrentDateKey(getDateKey());
     const timer = window.setInterval(syncDate, 30_000);
     document.addEventListener("visibilitychange", syncDate);
+    window.addEventListener("focus", syncDate);
     return () => {
       window.clearInterval(timer);
       document.removeEventListener("visibilitychange", syncDate);
+      window.removeEventListener("focus", syncDate);
     };
   }, []);
   useEffect(() => {
@@ -318,6 +321,7 @@ export default function App() {
   if (active === "workouts") page = <WorkoutsPage state={state} setState={setState} />;
   if (active === "weekly") page = <WeeklyPage state={state} />;
   if (active === "themes") page = <ThemeCenter theme={theme} />;
+  if (active === "skin-care") page = <SkinCarePage skin={state.skinCare} today={currentDateKey} onChange={updater => setState(current => ({ ...current, skinCare: updater(current.skinCare) }))} decorations={theme.activeTheme.decorations} />;
   if (active === "library") page = <LuminaLibrary favorites={state.literaryFavorites} onToggle={favorite} onBack={() => setActive('today')} />;
 
   return (

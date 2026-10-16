@@ -1,6 +1,8 @@
 import { DEFAULT_WATER_SETTINGS, normalizeWaterDay, normalizeWaterSettings } from "./water.js";
 import { DEFAULT_THEME_ID, normalizeThemeId } from "./config/themes.js";
 import { normalizeLiteraryFavorites } from "./literary.ts";
+import { getLocalDateKey } from "./dates.js";
+import { emptySkinCare, normalizeSkinCare } from "./features/skin-care/skinCare.js";
 
 const STORAGE_KEY = "daily-reset-pwa:v3";
 const LEGACY_STORAGE_KEYS = ["daily-reset-pwa:v2", "daily-reset-pwa:v1"];
@@ -21,6 +23,7 @@ function createInitialState() {
     version: 3,
     themeId: DEFAULT_THEME_ID,
     literaryFavorites: [],
+    skinCare: emptySkinCare(),
     habits: DEFAULT_HABITS.map((habit) => ({ ...habit })),
     days: {},
     workouts: [],
@@ -47,6 +50,7 @@ export function migrateState(parsed) {
     version: 3,
     themeId: normalizeThemeId(parsed.themeId),
     literaryFavorites: normalizeLiteraryFavorites(parsed.literaryFavorites),
+    skinCare: normalizeSkinCare(parsed.skinCare),
     habits: Array.isArray(parsed.habits) ? parsed.habits : initialState.habits,
     days: parsed.days && typeof parsed.days === "object" ? parsed.days : {},
     workouts: Array.isArray(parsed.workouts) ? parsed.workouts : [],
@@ -70,10 +74,7 @@ export function saveState(state, storage = localStorage) {
 }
 
 export function getDateKey(date = new Date()) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+  return getLocalDateKey(date);
 }
 
 export function addDays(date, amount) {

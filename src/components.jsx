@@ -4,6 +4,7 @@ import { decorationProps } from "./config/decorations.js";
 import { ThemeSticker, ThemeSectionIcon } from "./features/theme-settings/ThemeDecoration";
 import {
   CalendarIcon,
+  CareIcon,
   ChartIcon,
   CheckIcon,
   CloseIcon,
@@ -22,12 +23,13 @@ export const NAV_ITEMS = [
   { id: "habits", label: "固定习惯", Icon: HabitIcon },
   { id: "workouts", label: "健身记录", Icon: DumbbellIcon },
   { id: "weekly", label: "每周回顾", Icon: ChartIcon },
+  { id: "skin-care", label: "Skin Care", Icon: CareIcon },
   { id: "themes", label: "主题", Icon: PaletteIcon },
 ];
 
 export function BottomNav({ active, onChange }) {
   return (
-    <nav className="bottom-nav" aria-label="主要页面">
+    <nav className="bottom-nav" aria-label="主要页面" style={{ '--nav-count': NAV_ITEMS.length }}>
       {NAV_ITEMS.map(({ id, label, Icon }) => (
         <button
           key={id}
