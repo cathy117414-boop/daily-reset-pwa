@@ -71,7 +71,7 @@ export function SkinCarePage({ skin, today, onChange, decorations }) {
   };
   const save = form => { onChange(current => saveCareItem(current, form, today)); close(); };
 
-  return <div className="skin-care-page">
+  return <div className={`skin-care-page${managing ? '' : ' care-home'}`}>
     <header className="care-page-header">
       <div className="date-line">{formatLocalDate(today, { weekday: 'long', month: 'long', day: 'numeric' })}</div>
       <div className="care-page-heading"><div><span className="care-eyebrow">SKIN CARE</span><h1>{managing ? 'Manage Routine' : 'Tonight’s Care'}</h1></div><ThemeSticker material={decorations?.primarySticker} className="care-header-sticker" /></div>
@@ -87,7 +87,7 @@ export function SkinCarePage({ skin, today, onChange, decorations }) {
       </article>)}</div>}
     </section> : <>
       <section className="care-section" aria-labelledby="care-routine-title"><div className="care-section-heading"><h2 id="care-routine-title">Routine</h2><span>今晚的基础护理</span></div>
-        {!list.routine.length ? <div className="care-empty"><p>今晚没有固定护理，轻松一点也很好。</p><button className="text-button" onClick={() => setModal({ kind: 'item' })}>Add Care Item</button></div> : <div className="care-routine-grid">{list.routine.map(item => {
+        {!list.routine.length ? <div className="care-empty care-empty--routine"><p>今晚没有固定护理，轻松一点也很好。</p><button className="text-button" onClick={() => setModal({ kind: 'item' })}>＋ Add first routine</button></div> : <div className="care-routine-grid">{list.routine.map(item => {
           const completed = isCompletedToday(skin, item.id, today);
           return <article className={`care-card care-routine-card ${completed ? 'care-is-done' : ''}`} key={item.id}>
             <CareMark style={decorations?.sectionIconStyle} /><button className="care-check" disabled={completed} aria-label={completed ? `${item.name} · Done tonight` : `Done ${item.name}`} onClick={() => done(item, 'routine')}>{completed ? <CheckIcon size={18} /> : null}</button>
@@ -95,15 +95,15 @@ export function SkinCarePage({ skin, today, onChange, decorations }) {
           </article>;
         })}</div>}
       </section>
-      <section className="care-section" aria-labelledby="care-due-title"><div className="care-section-heading"><h2 id="care-due-title">Due Today</h2><span>到了适合照顾的日子</span></div>
-        {!list.due.length ? <div className="care-empty">Nothing extra is due tonight ✦</div> : <div className="care-list">{list.due.map(item => {
+      <section className="care-section" aria-labelledby="care-due-title"><div className="care-section-heading"><h2 id="care-due-title">Due Today</h2><span>今晚的周期护理</span></div>
+        {!list.due.length ? <div className="care-empty care-empty--due">Nothing extra is due tonight ✦</div> : <div className="care-list">{list.due.map(item => {
           const completed = isCompletedToday(skin, item.id, today);
           const content = <><CareMark style={decorations?.sectionIconStyle} /><div className="care-card-copy"><h3>{item.name}</h3><p>{completed ? 'Done tonight' : frequencyLabel(item.frequency)}</p><small>{completed ? `Next · ${formatLocalDate(item.nextDueAt)}` : `Last · ${formatLocalDate(item.lastCompletedAt)}`}</small>{!completed ? <span className="care-due-label">Due tonight</span> : null}</div><span className="care-due-mark" aria-hidden="true">{completed ? <CheckIcon size={18} /> : '＋'}</span></>;
           return completed ? <article key={item.id} className="care-card care-due-card care-is-done">{content}</article> : <details key={item.id} className="care-card care-due-details"><summary aria-label={`Care options ${item.name}`}>{content}</summary><div className="care-card-actions"><button className="primary-button" onClick={() => done(item, 'due')}>Done</button><button className="text-button" onClick={() => { onChange(current => snoozeCareItemToTomorrow(current, item.id, today)); setMessage(`${item.name} · 明晚再提醒`); }}>Tomorrow</button></div></details>;
         })}</div>}
       </section>
-      <section className="care-section" aria-labelledby="care-extra-title"><div className="care-section-heading care-extra-heading"><h2 id="care-extra-title">Extra Care Today</h2><AddButton onClick={() => setModal({ kind: 'extra' })}>Add Extra Care</AddButton></div>
-        {!list.extra.length ? <div className="care-empty"><p>Feel like a little extra care?</p><button className="text-button" onClick={() => setModal({ kind: 'extra' })}>＋ Add something</button></div> : <div className="care-list">{list.extra.map(log => <article key={log.id} className="care-card care-extra-card"><span className="care-card-icon"><CheckIcon size={22} /></span><div className="care-card-copy"><h3>{log.name}</h3><p>Extra tonight</p>{log.countsAsCompletion ? <small>Counted as completed</small> : null}</div></article>)}</div>}
+      <section className="care-section" aria-labelledby="care-extra-title"><div className="care-section-heading care-extra-heading"><h2 id="care-extra-title">Extra Care Today</h2>{list.extra.length ? <AddButton onClick={() => setModal({ kind: 'extra' })}>Add Extra Care</AddButton> : <span>随心加一点</span>}</div>
+        {!list.extra.length ? <div className="care-empty care-empty--extra"><p>Feel like a little extra care?</p><button className="text-button" onClick={() => setModal({ kind: 'extra' })}>＋ Add something</button></div> : <div className="care-list">{list.extra.map(log => <article key={log.id} className="care-card care-extra-card"><span className="care-card-icon"><CheckIcon size={22} /></span><div className="care-card-copy"><h3>{log.name}</h3><p>Extra tonight</p>{log.countsAsCompletion ? <small>Counted as completed</small> : null}</div></article>)}</div>}
       </section>
     </>}
     {modal?.kind === 'item' ? <Modal title={modal.item ? 'Edit Care Item' : 'Add Care Item'} onClose={close}><CareItemForm initial={modal.item} today={today} onSave={save} onClose={close} /></Modal> : null}

@@ -1,5 +1,11 @@
 # 更新记录
 
+## 2026-10-16 · Tonight’s Care 紧凑首页
+
+- 压缩 Routine / Due Today / Extra Care Today 空状态与分区间距，保留 44px 添加按钮触控区域。
+- Routine 空入口改为「＋ Add first routine」，保留顶部 Manage Routine；Extra 空状态仅保留「＋ Add something」，已有记录时保留标题栏添加按钮。
+- 简化中文分区说明并微调可读性，沿用原主题、纸纹、叶子及边框；护理数据、周期与保存逻辑不变。
+
 ## 2026-10-15 · Skin Care v1
 
 - 新增底部 Skin Care 入口、Tonight’s Care 三个小卡片区域与 Manage Routine；原有六页保留，不扩展库存、产品库、统计、连续打卡或通知。
